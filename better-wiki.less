@@ -1,0 +1,30 @@
+@base-bg: #fff;
+@base-color: #333;
+body {
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+   line-height: 1.5em;
+   max-width: 900px;
+   margin: 0 auto;
+}
+.ink {
+	border-bottom: 1px dashed @base-color;
+	cursor: pointer;
+	color: lighten(@base-color, 10%);
+}
+.panel {
+	padding: 20px 0;
+	background-color: @base-bg;
+}
+.panel .panel {
+	margin: 5px 0;
+	padding: 10px 20px;
+	border-left: 2px solid #ddd;
+	background-color: darken(@base-bg, 5%);	
+}
+.panel .panel .panel {
+	background-color: darken(@base-bg, 10%);	
+}
+.hide {
+	display: none;
+}
