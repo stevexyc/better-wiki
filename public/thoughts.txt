@@ -1,0 +1,10 @@
+so this can be done using components 
+
+everything is an item. every item has its own html. 
+
+when editing one is able to edit everything. 
+
+When displaying an item, the software actually searches through its text and matches its text with other items. This is usually how other programs does this right?
+
+
+also, please avoid the infinite loop while auto matching, thanks. 
