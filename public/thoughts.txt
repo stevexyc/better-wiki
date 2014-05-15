@@ -8,3 +8,6 @@ When displaying an item, the software actually searches through its text and mat
 
 
 also, please avoid the infinite loop while auto matching, thanks. 
+
+
+I totally gave up on auto matching.... instead i am using links within medium editor now... so you have to manually set up a link and what it points to. I should really create slugs and shit to make sure term names are not retarded lol. 

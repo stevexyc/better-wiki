@@ -1,0 +1,239 @@
+@import "/packages/font-awesome-4-less/font-awesome.import.less";
+
+@base-bg: #fff;
+@base-color: #333;
+@link: steelblue;
+@muted: gray;
+@dark: #242424;
+
+body {
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+   line-height: 1.5em;
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 0 20px;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	display: inline-block;
+}
+p {
+	margin: 0;
+}
+a {
+	text-decoration: none;
+	cursor: pointer;
+	color: @link;
+	&:hover {
+		text-decoration: underline;
+	}
+	.panel {
+		color: #333;
+		cursor: default;
+	}
+	&[target=_blank] {
+		color: tomato;
+		border-bottom: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+.topbar {
+	padding-top: 1px;
+	margin-bottom: 30px;
+	.searchbox {
+		padding: 0 2px 0 5px;
+		border-bottom: 1px dotted @dark;
+		i {
+			color:@muted;
+			&:hover {
+				color:@dark;
+				cursor: pointer;
+			}
+		}
+	}
+	.blue {
+		border-color: @link;
+		background-color: lighten(@muted, 45%)
+	}
+	.search {
+		width: 80px;
+		padding: 0;
+		outline: none;
+		border: none;
+		font-size: 1em;
+		background-color: transparent;
+		-webkit-transition: width 0.5s ease-in-out;
+	    -moz-transition: width 0.5s ease-in-out;
+	    -o-transition: width 0.5s ease-in-out;
+	    transition: width 0.5s ease-in-out;
+	    color:@muted;
+		&:focus {
+			width: 200px;
+			color: black;
+		}
+	}
+}
+.menu {
+	position: fixed;
+	left: 0;
+	top: 0;
+	min-height: 100%;
+	width: 180px;
+	background-color: @dark;
+	color: white;
+	ul {
+		padding: 0;
+		margin: 10px 0;
+		list-style-type: none;
+		li {
+			border-bottom: 1px solid black;
+			padding-left: 10px;
+			a {
+				font-size: 1em;
+				font-weight: bold;
+				color: @muted;
+				text-decoration: none;
+				display: block;
+				line-height: 1em;
+				padding: 10px 0;
+				&:hover {
+					color: @link;
+				}
+			}
+			li {
+				border-top: 1px solid black;
+				border-bottom: none;
+				margin-left: 2px;
+				padding-left: 8px;
+				background-color: lighten(@dark, 5%);
+				a {
+					font-size: .9em;
+				}
+			}
+			li.add-to-menu {
+				background-color: lighten(@dark, 4%);
+				a {font-size: .8em}
+				&:hover {
+					background-color: lighten(@dark, 5%)
+				}
+			}
+		}
+		li.add-to-menu {
+			a { font-size: .9em}
+			&:hover {background-color: lighten(@dark, 2%);}
+		}
+		li:last-child {
+			border-bottom: none;
+		}
+	}
+}
+.action-bar {
+	background-color: lighten(@muted, 45%);
+	padding: 2px 5px;
+}
+.item {
+
+}
+.title-bar {
+	position: relative;
+	margin: 20px 0 0 0;
+	text-transform: capitalize;
+	.title {
+		font-size: 2em;
+		font-weight: bold;
+	}
+	.edit-title {
+		font-size: 2em;
+		font-family: inherit;
+		padding: 0;
+		margin: 0;
+		font-weight: bold;
+		border:none;
+		outline: none;
+	}
+}
+.index-item {
+	.title-bar .title {
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
+.editbox {
+	border: 1px dotted gray;
+	padding: 0 15px;
+	margin-left: -15px;
+	margin-right: -15px;
+}
+.btn {
+	cursor: pointer;
+}
+.edit-btn {
+	#fa-icon(pencil-square-o, @muted);
+	float: right;
+}
+.edit-btn:hover{
+	#fa-icon(pencil-square-o, black);
+}
+.save-btn {
+	#fa-icon(check-square, green);
+	float: right;
+}
+.panel {
+	padding: 20px 0;
+	background-color: @base-bg;
+}
+.panel .panel {
+	margin: 5px 0;
+	padding: 10px 20px;
+	border-left: 2px solid #ddd;
+	background-color: darken(@base-bg, 5%);	
+}
+.panel .panel .panel {
+	background-color: darken(@base-bg, 10%);	
+}
+// typeahead 
+.medium-editor-toolbar-form-anchor .twitter-typeahead {
+	.tt-dropdown-menu {
+		padding: 5px 0;
+		background-color: #242424;
+		margin-top: 1px;
+		margin-left: 2px;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		font-size: 13px;
+		.tt-suggestion {
+			padding: 3px 10px;
+			border-bottom: 1px solid black;
+			&.tt-cursor {
+				background-color: lighten(@dark, 10%);
+			}
+			strong {
+				color: lighten(@link,20%);
+			}
+		}
+	}
+}
+.btn-link {
+	font-size: 0.75em;
+	color: @link;
+	font-weight: bold;
+	cursor: pointer;
+	&:hover {
+		color: tomato;
+		text-decoration: underline;
+	}
+}
+button {
+	border: none;
+	border-radius: 0;
+	background-color: lighten(@muted, 45%);
+}
+// utils
+.caps {	text-transform: capitalize; }
+.pull-right {float: right;}
+.hide {
+	display: none;
+}

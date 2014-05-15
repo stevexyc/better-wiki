@@ -1,0 +1,100 @@
+<head>
+  <title>better-wiki</title>
+</head>
+
+<body>
+</body>
+
+<template name="appWrap">
+	{{> topBar}}
+	{{> menu}}
+	<div id="content">
+		{{> yield}}
+	</div>
+	<input type="text" id="wtf"/><button id="test">btn</button>
+</template>
+
+<template name="topBar">
+	<div class="topbar">
+		<a><i class="fa fa-bars"></i></a>
+		<div class="pull-right searchbox">
+			<input type="text" id="searchbar" class="search form-control typeahead" autocomplete="off" spellcheck="off" data-source="terms"/>
+			<i class="fa fa-search"></i>
+		</div>
+	</div>
+</template>
+
+<template name="menu">
+	<div class="menu">
+		<ul>
+			{{#each linklist}}
+				<li>
+					<a href="/{{this.slug}}">{{this.title}}</a>
+					{{#each this.links}}
+						<li>
+							<a href="/{{this.slug}}" class="linklist-item caps">{{this.title}}</a>
+						</li>
+					{{/each}}
+						<li class="add-to-menu">
+							<a href="#"><i class="fa fa-plus-circle"></i> new link</a>
+						</li>
+				</li>
+			{{/each}}
+			<li><a href="/index">Index</a></li>
+			<li class="add-to-menu">
+				<a href="#"><i class="fa fa-plus-circle"></i> new group</a>
+			</li>
+		</ul>
+	</div>
+</template>
+
+<template name="page">
+	{{> zitem}}
+</template>
+
+<template name="index">
+	<div class="page-title">
+		<h1>Index</h1>
+		<div class="action-bar pull-right">
+			<span class="btn-link">Add Term</span>
+		</div>
+	</div>
+	{{#each item}}
+		<div class="index-item">
+			{{> zitem}}
+		</div>
+	{{/each}}
+</template>
+
+<template name="zitem">
+	<div class="item {{#if being_edited}}editbox{{/if}}" id="{{_id}}">
+		<div class="title-bar">
+			{{#if being_edited}}
+				<input class="edit-title" type="text" value="{{this.name}}">
+			{{else}}
+				<span class="title">{{this.name}}</span>
+			{{/if}}
+			{{#if being_edited}}
+				<span class="btn save-btn"></span>
+			{{else}}
+				<span class="btn edit-btn"></span> 
+			{{/if}}
+		</div>
+		<div class="panel" style="padding-top:10px;">
+			{{{this.definition}}}
+		</div>
+	</div>
+</template>
+
+<template name="inneritem">
+	{{#with getitem zname}}
+	<div class="panel" contenteditable="false">
+		<b>{{this.name}}: </b>
+		{{{this.definition}}}
+	</div>
+	{{/with}}
+</template>
+
+<template name="loading">
+	loading...
+</template>
