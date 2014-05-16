@@ -6,17 +6,24 @@
 </body>
 
 <template name="appWrap">
-	{{> topBar}}
-	{{> menu}}
-	<div id="content">
-		{{> yield}}
+	<div class="app-wrap">
+		<div id="menu-wrap" class="hide-menu">
+			{{> menu}}
+		</div>
+		<div id="content-wrap">
+			<div class="content">
+			{{> topBar}}
+			{{> yield}}
+			</div>
+		</div>
+
 	</div>
-	<input type="text" id="wtf"/><button id="test">btn</button>
+	<!-- <input type="text" id="wtf"/><button id="test">btn</button> -->
 </template>
 
 <template name="topBar">
 	<div class="topbar">
-		<a><i class="fa fa-bars"></i></a>
+		<i id="menu-toggle" class="fa fa-bars"></i>
 		<div class="pull-right searchbox">
 			<input type="text" id="searchbar" class="search form-control typeahead" autocomplete="off" spellcheck="off" data-source="terms"/>
 			<i class="fa fa-search"></i>

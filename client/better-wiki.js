@@ -84,6 +84,9 @@ Template.topBar.terms = function () {
 }
 
 Template.topBar.events({
+  'click #menu-toggle': function () {
+    $('#menu-wrap').toggleClass('hide-menu');
+  },
   'focus #searchbar': function () {
     $('.searchbox').addClass('blue');
     Deps.flush();
