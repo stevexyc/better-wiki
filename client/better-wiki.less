@@ -19,6 +19,10 @@ body {
    margin: 0 auto;
    // padding: 0 20px;
 }
+input {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-weight: 300;
+}
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 	display: inline-block;
@@ -83,23 +87,26 @@ a {
 	    align-items: stretch;
 		padding: 0 20px;
 		.content {
-			max-width: 800px;
+			width: 700px;
 		}
 	}
 	#extra-wrap {
 		width: 200px;
 	}
 }
+.fa {
+	color:@muted;
+	background-color: @button;
+	padding: 5px 8px;
+	cursor: pointer;
+	&:hover { 
+		color: white;
+		background-color: MediumAquaMarine;
+	}
+}
 .topbar {
 	padding-top: 1px;
 	margin-bottom: 30px;
-	.fa {
-		color:@muted;
-		background-color: @button;
-		padding: 5px 8px;
-		cursor: pointer;
-		&:hover { color: lighten(@link, 20%); }
-	}
 	.searchbox {
 		padding: 0 0 0 5px;
 		border-bottom: 1px dotted @dark;
@@ -132,6 +139,10 @@ a {
 	// width: 180px;
 	background-color: @dark;
 	color: white;
+	.fa {
+		background-color: transparent;
+		padding: 0;
+	}
 	ul {
 		padding: 0;
 		margin: 0;
@@ -169,18 +180,45 @@ a {
 				}
 			}
 		}
-		li.add-to-menu {
+		li.add-menu-group {
 			a { font-size: .9em}
 			&:hover {background-color: lighten(@dark, 2%);}
 		}
 		li:last-child {
 			border-bottom: none;
 		}
+		.add-link {
+			font-weight: bold;
+			font-size: .9em;
+			border: none;
+			outline: none;
+			background-color: transparent;
+			color: @muted;
+			padding: 10px 0;
+			margin: 0;
+		}
+	}
+	.tt-dropdown-menu {
+		padding: 0;
+		background-color: lighten(@dark, 10%);
+		margin-top: 1px;
+		font-size: 0.8em;
+		color: @muted;
+		font-weight: bold;
+		.tt-suggestion {
+			padding: 3px 10px;
+			border-bottom: 1px solid #333;
+			&.tt-cursor {
+				background-color: lighten(@dark, 20%);
+				color: lighten(@muted, 10%);
+			}
+			strong {
+				color: lighten(@link,20%);
+			}
+		}
 	}
 }
 .action-bar {
-	background-color: lighten(@muted, 45%);
-	padding: 2px 5px;
 }
 .item {
 

@@ -7,7 +7,7 @@
 
 <template name="appWrap">
 	<div class="app-wrap">
-		<div id="menu-wrap" class="hide-menu">
+		<div id="menu-wrap" class="">
 			{{> menu}}
 		</div>
 		<div id="content-wrap">
@@ -35,36 +35,38 @@
 	<div class="menu">
 		<ul>
 			{{#each linklist}}
-				<li>
+				<li class="top-lvl-list" id="{{_id}}">
 					<a href="/{{this.slug}}">{{this.title}}</a>
 					{{#each this.links}}
-						<li>
+						<li class="sub-lvl-list">
 							<a href="/{{this.slug}}" class="linklist-item caps">{{this.title}}</a>
 						</li>
 					{{/each}}
 						<li class="add-to-menu">
-							<a href="#"><i class="fa fa-plus-circle"></i> new link</a>
+							<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>
 						</li>
 				</li>
 			{{/each}}
 			<li><a href="/index">Index</a></li>
-			<li class="add-to-menu">
+			<li class="add-menu-group">
 				<a href="#"><i class="fa fa-plus-circle"></i> new group</a>
 			</li>
+			<li><button id="test">test</button></li>
 		</ul>
 	</div>
 </template>
 
 <template name="page">
 	{{> zitem}}
+	<div>
+		{{> actionbar}}
+	</div>
 </template>
 
 <template name="index">
 	<div class="page-title">
 		<h1>Index</h1>
-		<div class="action-bar pull-right">
-			<span class="btn-link">Add Term</span>
-		</div>
+		{{> actionbar}}
 	</div>
 	{{#each item}}
 		<div class="index-item">
@@ -100,6 +102,12 @@
 		{{{this.definition}}}
 	</div>
 	{{/with}}
+</template>
+
+<template name="actionbar">
+	<div class="pull-right">
+		<i class="fa fa-plus"></i>
+	</div>
 </template>
 
 <template name="loading">

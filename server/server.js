@@ -2,7 +2,7 @@ Wiki = new Meteor.Collection("wiki");
 Links = new Meteor.Collection("links");
 
 Meteor.methods({
-  updatetext: function (id, name, slug, text) {
+  updateText: function (id, name, slug, text) {
     Wiki.upsert({_id:id},
       {
         name: name,
@@ -10,6 +10,23 @@ Meteor.methods({
         definition: text
       }
     );
+  },
+  newSubLinks: function (id,newsublinks) {
+    Links.upsert({_id:id},
+      { $set: 
+        { links:newsublinks } 
+      }
+    );
+  },
+  updateMenu: function (content) {
+    Links.upsert({_id:content.id},
+      {
+        order: content.order,
+        title: content.title,
+        slug: content.slug,
+        links: content.links
+      }
+    )
   }
 });
 

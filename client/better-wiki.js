@@ -116,7 +116,47 @@ Template.topBar.events({
 Template.menu.linklist = function () {
   // SORT by order 
   return Links.find();
-}
+};
+
+Template.menu.events({
+  'click #add-link': function (e,t) {
+    var parent = $(e.target).parent();
+    var $newinput = $('<input type="text" class="add-link"/>');
+    $(parent).html($newinput);
+    $newinput.typeahead({
+              hint: true,
+              highlight: true,
+              minLength: 1,
+            },{
+              name: 'terms',
+              displayKey: 'value',
+              source: substringMatcher()
+            });
+    $newinput.focus();
+  },
+  'keyup .add-link': function (e,t) {
+    if (e.which === 13) {
+      var target = $(e.target);
+      var parent = target.closest('li');
+      var newlinkname = target.val();
+      var slug = generateSlug(newlinkname);
+      if (slug.length !== 0) {
+        var currentlinks = this.links
+        currentlinks.push({title:newlinkname,slug:slug});
+        // console.log(currentlinks);
+        Meteor.call('newSubLinks',this._id,currentlinks);
+      };
+      target.blur();
+    };
+  },
+  'blur .add-link': function (e,t) {
+    var parent = $(e.target).parent();
+    parent.html('<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>');
+  },
+  'click #test': function () {
+    // saveMenu();
+  }
+});
 
 Template.index.item = function () {
   return Wiki.find();
@@ -183,14 +223,15 @@ Template.zitem.events ({
     console.log('name: '+name);
     // get the slug 
     var originalslug = this.slug;
-    var slug = name.replace(/ /g,'-').toLowerCase();
+    // var slug = name.replace(/ /g,'-').toLowerCase();
+    var slug = generateSlug(name);
     console.log('slug: '+slug);
     // get the new text
     var textobj = editor.serialize();
     var text = textobj['element-0']['value'];
     console.log(text);
     // update database by calling updatetext method
-    Meteor.call('updatetext', this._id, name, slug, text);
+    Meteor.call('updateText', this._id, name, slug, text);
     // destroy medium-editor
     editor.deactivate();
     if (originalslug !== slug) {
@@ -201,6 +242,35 @@ Template.zitem.events ({
 
 Template.inneritem.getitem = function (name) {
   return Wiki.findOne({name:name});
+}
+
+var saveMenu = function () {
+  Deps.flush();
+  var allLinks = $('.top-lvl-list > a').map(function (index) {
+    var obj = {};
+    var sublinks = $(this).siblings('.sub-lvl-list').find('a');
+    obj.id = $(this).parent().attr('id');
+    obj.title = $(this).text();
+    obj.slug = $(this).attr('href').substr(1);
+    obj.order = index;
+    obj.links = sublinks.map(function (index) {
+      var sublink = {};
+      sublink.title = $(this).text();
+      sublink.slug = $(this).attr('href').substr(1);
+      return sublink;
+    }).get();
+    return obj;
+  }).get();
+  console.log(allLinks);
+  for (var i = 0; i < allLinks.length; i++) {
+    console.log(allLinks[i]);
+    Meteor.call('updateMenu',allLinks[i]);
+  };
+  // ultimately i need [{},{},{}]
+}
+
+var generateSlug = function (text) {
+  return text.trim().replace(/ /g,'-').toLowerCase();
 }
 
 
