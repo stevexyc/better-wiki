@@ -11,12 +11,21 @@ Meteor.methods({
       }
     );
   },
-  newSubLinks: function (id,newsublinks) {
-    Links.upsert({_id:id},
-      { $set: 
-        { links:newsublinks } 
+  addLink: function (title,slug,order) {
+    Links.insert({
+      title: title,
+      slug: slug,
+      order: order,
+    });
+  },
+  updateLinkOrder: function (id, neworder) {
+    // check(order, Number);
+    Links.update(
+      {_id:id},
+      {$set:
+        {order: neworder}
       }
-    );
+    )
   },
   updateMenu: function (content) {
     Links.upsert({_id:content.id},
@@ -41,23 +50,19 @@ Meteor.publish('Link-List', function () {
 Meteor.startup(function () {
   if (Links.find().count() === 0) {
     Links.insert({
-      title: 'Main List',
+      title: 'First List',
       slug: 'topic-1',
       order: 0,
-      links: [
-          {
-            title: 'Topic-1',
-            slug: 'topic-1'
-          },
-          {
-            title: 'geometric objects',
-            slug: 'geometric-objects',
-          },
-          {
-            title: 'ray',
-            slug: 'ray',
-          }
-        ]
+    });
+    Links.insert({
+      title: 'Second List',
+      slug: 'ray',
+      order: 1,
+    });
+    Links.insert({
+      title: 'Third List',
+      slug: 'geometric-objects',
+      order: 2,
     });
   }
   if (Wiki.find().count() === 0) {

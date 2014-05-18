@@ -8,7 +8,7 @@
 <template name="appWrap">
 	<div class="app-wrap">
 		<div id="menu-wrap" class="">
-			{{> menu}}
+			{{> zmenu}}
 		</div>
 		<div id="content-wrap">
 			<div class="content">
@@ -29,6 +29,32 @@
 			<i class="fa fa-search"></i>
 		</div>
 	</div>
+</template>
+
+<template name="zmenu">
+	<div class="menu">
+		<ul>
+			<li>
+				<div class="menu-heading">Pages</div>
+				<ul id="page-menu">
+				{{#each linklist}}
+					<li class="sub-lvl-link {{current}}">
+						<a href="{{this.slug}}">{{this.title}}</a>
+					</li>
+				{{/each}}
+					<li class="add-to-menu">
+						<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="/index">Index</a></li>
+			<li>
+				<!-- <a href="#">Users</a> -->
+			</li>
+		</ul>
+	</div>
+	
 </template>
 
 <template name="menu">

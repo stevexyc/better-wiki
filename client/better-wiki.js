@@ -113,12 +113,54 @@ Template.topBar.events({
   }
 });
 
+Template.zmenu.rendered = function () {
+  this.$('#page-menu').sortable({
+    stop: function (event, ui) {
+      var el = ui.item.get(0);
+      var before = ui.item.prev().get(0);
+      var after = ui.item.next().get(0);
+
+      var newRank;
+      if (!before) { // moving to the top of the list
+        newRank = calcRank.beforeFirst(UI.getElementData(after).order);
+
+      } else if (!after) { // moving to the bottom of the list
+        newRank = calcRank.afterLast(UI.getElementData(before).order);
+
+      } else {
+        newRank = calcRank.between(
+          UI.getElementData(before).order,
+          UI.getElementData(after).order);
+      }
+
+      Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
+      // // Meteor.call(updateLinkOrder, el.$ui.data()._id, newRank);
+      console.log(newRank);
+    }
+  })
+}
+
+// probably useless now due to zmenu
 Template.menu.linklist = function () {
   // SORT by order 
   return Links.find();
 };
 
-Template.menu.events({
+Template.zmenu.linklist = function () {
+  // SORT by order 
+  return Links.find({}, {sort:{order:1}});
+};
+
+Template.zmenu.current = function () {
+  if (this.slug === Router.current().path) {
+    return 'current';
+  } else if ( ('/' + this.slug) === Router.current().path) {
+    return 'current';
+  }
+}
+
+
+Template.zmenu.events({
   'click #add-link': function (e,t) {
     var parent = $(e.target).parent();
     var $newinput = $('<input type="text" class="add-link"/>');
@@ -137,14 +179,11 @@ Template.menu.events({
   'keyup .add-link': function (e,t) {
     if (e.which === 13) {
       var target = $(e.target);
-      var parent = target.closest('li');
       var newlinkname = target.val();
       var slug = generateSlug(newlinkname);
+      var count = $('.sub-lvl-link').length + 1;
       if (slug.length !== 0) {
-        var currentlinks = this.links
-        currentlinks.push({title:newlinkname,slug:slug});
-        // console.log(currentlinks);
-        Meteor.call('newSubLinks',this._id,currentlinks);
+        Meteor.call('addLink',newlinkname,slug,count);
       };
       target.blur();
     };
@@ -273,6 +312,17 @@ var generateSlug = function (text) {
   return text.trim().replace(/ /g,'-').toLowerCase();
 }
 
+var calcRank = {
+  beforeFirst: function (firstRank) {
+    return firstRank -1;
+  },
+  between: function (beforeRank, afterRank) {
+    return (beforeRank + afterRank) / 2;
+  },
+  afterLast: function (lastRank) {
+    return lastRank + 1;
+  }
+};
 
 
 

@@ -109,10 +109,14 @@ a {
 	margin-bottom: 30px;
 	.searchbox {
 		padding: 0 0 0 5px;
-		border-bottom: 1px dotted @dark;
+		border-bottom: 1px solid lighten(@muted, 30%);
+		-webkit-transition: background-color 0.5s ease-in-out;
+	    -moz-transition: background-color 0.5s ease-in-out;
+	    -o-transition: background-color 0.5s ease-in-out;
+	    transition: background-color 0.5s ease-in-out;
 	}
 	.blue {
-		border-color: @link;
+		// border-color: @link;
 		background-color: @button;
 	}
 	.search {
@@ -138,7 +142,11 @@ a {
 	width: 100%;
 	// width: 180px;
 	background-color: @dark;
-	color: white;
+	.menu-heading{
+		color: darken(@muted, 10%);
+		padding: 5px 0;
+		font-weight: bold;
+	}
 	.fa {
 		background-color: transparent;
 		padding: 0;
@@ -158,6 +166,7 @@ a {
 				display: block;
 				line-height: 1em;
 				padding: 10px 0;
+				text-transform: capitalize;
 				&:hover {
 					color: @link;
 				}
@@ -180,9 +189,8 @@ a {
 				}
 			}
 		}
-		li.add-menu-group {
-			a { font-size: .9em}
-			&:hover {background-color: lighten(@dark, 2%);}
+		li.current a {
+			color: lighten(@muted, 35%);
 		}
 		li:last-child {
 			border-bottom: none;
