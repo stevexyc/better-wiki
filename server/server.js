@@ -18,6 +18,9 @@ Meteor.methods({
       order: order,
     });
   },
+  deleteLink: function (id) {
+    Links.remove({_id: id});
+  },
   updateLinkOrder: function (id, neworder) {
     // check(order, Number);
     Links.update(

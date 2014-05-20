@@ -115,10 +115,11 @@ Template.topBar.events({
 
 Template.zmenu.rendered = function () {
   this.$('#page-menu').sortable({
+    items: ">li:not(.add-to-menu)",
     stop: function (event, ui) {
       var el = ui.item.get(0);
       var before = ui.item.prev().get(0);
-      var after = ui.item.next().get(0);
+      var after = ui.item.next(':not(.add-to-menu)').get(0);
 
       var newRank;
       if (!before) { // moving to the top of the list
@@ -130,7 +131,8 @@ Template.zmenu.rendered = function () {
       } else {
         newRank = calcRank.between(
           UI.getElementData(before).order,
-          UI.getElementData(after).order);
+          UI.getElementData(after).order
+        );
       }
 
       Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
@@ -191,6 +193,10 @@ Template.zmenu.events({
   'blur .add-link': function (e,t) {
     var parent = $(e.target).parent();
     parent.html('<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>');
+  },
+  'click .delete-link': function (e,t) {
+    console.log(this._id);
+    Meteor.call('deleteLink',this._id);
   },
   'click #test': function () {
     // saveMenu();

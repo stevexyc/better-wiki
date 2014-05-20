@@ -94,7 +94,7 @@ a {
 		width: 200px;
 	}
 }
-.fa {
+.title-bar .fa, .topbar .fa, .page-title .fa{
 	color:@muted;
 	background-color: @button;
 	padding: 5px 8px;
@@ -171,14 +171,25 @@ a {
 					color: @link;
 				}
 			}
-			li {
+			li, li.sub-lvl-link {
 				border-top: 1px solid black;
 				border-bottom: none;
 				margin-left: 2px;
 				padding-left: 8px;
+				padding-right: 25px;
+				position: relative;
 				background-color: lighten(@dark, 5%);
 				a {
 					font-size: .9em;
+				}
+				i.delete-link {
+					position: absolute;
+					right: 5px;
+					top: 10px;
+					cursor: pointer;
+					&:hover {
+						color: tomato;
+					}
 				}
 			}
 			li.add-to-menu {
@@ -205,6 +216,7 @@ a {
 			padding: 10px 0;
 			margin: 0;
 		}
+
 	}
 	.tt-dropdown-menu {
 		padding: 0;
