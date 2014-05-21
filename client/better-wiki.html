@@ -17,11 +17,13 @@
 			</div>
 		</div>
 	</div>
+	{{> actionbar}}
 </template>
 
 <template name="topBar">
 	<div class="topbar">
 		<i id="menu-toggle" class="fa fa-bars"></i>
+		<i class="fa fa-plus pull-right"></i>
 		<div class="pull-right searchbox">
 			<input type="text" id="searchbar" class="search form-control typeahead" autocomplete="off" spellcheck="off" data-source="terms"/>
 			<i class="fa fa-search"></i>
@@ -46,7 +48,7 @@
 					</li>
 				</ul>
 			</li>
-			<li>
+			<li class="{{current 'index'}}">
 				<a href="/index">Index</a></li>
 			<li>
 				<!-- <a href="#">Users</a> -->
@@ -56,42 +58,13 @@
 	
 </template>
 
-<template name="menu">
-	<div class="menu">
-		<ul>
-			{{#each linklist}}
-				<li class="top-lvl-list" id="{{_id}}">
-					<a href="/{{this.slug}}">{{this.title}}</a>
-					{{#each this.links}}
-						<li class="sub-lvl-list">
-							<a href="/{{this.slug}}" class="linklist-item caps">{{this.title}}</a>
-						</li>
-					{{/each}}
-						<li class="add-to-menu">
-							<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>
-						</li>
-				</li>
-			{{/each}}
-			<li><a href="/index">Index</a></li>
-			<li class="add-menu-group">
-				<a href="#"><i class="fa fa-plus-circle"></i> new group</a>
-			</li>
-			<li><button id="test">test</button></li>
-		</ul>
-	</div>
-</template>
-
 <template name="page">
 	{{> zitem}}
-	<div>
-		{{> actionbar}}
-	</div>
 </template>
 
 <template name="index">
 	<div class="page-title">
 		<h1>Index</h1>
-		{{> actionbar}}
 	</div>
 	{{#each item}}
 		<div class="index-item">
@@ -111,6 +84,7 @@
 			{{#if being_edited}}
 				<span class="btn save-btn"></span>
 			{{else}}
+				<i class="fa fa-times pull-right"></i>
 				<span class="btn edit-btn"></span> 
 			{{/if}}
 		</div>
@@ -126,8 +100,7 @@
 			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
 			<i class="fa fa-save"></i>
 		</div>
-		<div class="panel" style="min-height:200px;">
-			
+		<div class="panel">
 		</div>
 	</div>
 </template>
@@ -142,8 +115,13 @@
 </template>
 
 <template name="actionbar">
-	<div class="pull-right">
-		<i class="fa fa-plus"></i>
+	<div class="confirm-overlay {{showConfirm}}"></div>
+	<div class="confirm-box-wrap {{showConfirm}}">
+		<div class="confirm-box">
+			Delete <span>{{itemName}}</span>?
+		</div>
+		<i class="fa fa-check confirm-delete"> Delete</i>
+		<i class="fa fa-times confirm-cancel"> Cancel</i>
 	</div>
 </template>
 

@@ -2,7 +2,14 @@ Wiki = new Meteor.Collection("wiki");
 Links = new Meteor.Collection("links");
 
 Meteor.methods({
-  updateText: function (id, name, slug, text) {
+  newItem: function (name, slug, text) {
+    Wiki.insert({
+      name: name,
+      slug: slug,
+      definition: text
+    })
+  },
+  updateItem: function (id, name, slug, text) {
     Wiki.upsert({_id:id},
       {
         name: name,
@@ -10,6 +17,9 @@ Meteor.methods({
         definition: text
       }
     );
+  },
+  deleteItem: function (id) {
+    Wiki.remove({_id: id})
   },
   addLink: function (title,slug,order) {
     Links.insert({
@@ -72,17 +82,17 @@ Meteor.startup(function () {
     Wiki.insert(
       { name: "Topic 1",
         slug: "topic-1",
-        definition: "In mathematics and theoretical physics, mirror symmetry is a relationship between two <a href='geometric objects'>geometric objects</a> called Calabi–Yau manifolds. It can happen that two Calabi–Yau manifolds look very different geometrically but are nevertheless equivalent if they are employed as extra dimensions of string theory. In this case, the manifolds are called mirror manifolds."
+        definition: "In mathematics and theoretical physics, mirror symmetry is a relationship between two <a href='Geometric Objects'>geometric objects</a> called Calabi–Yau manifolds. It can happen that two Calabi–Yau manifolds look very different geometrically but are nevertheless equivalent if they are employed as extra dimensions of string theory. In this case, the manifolds are called mirror manifolds."
       }
     );
     Wiki.insert(
-      { name: "geometric objects",
+      { name: "Geometric Objects",
         slug: "geometric-objects",
-        definition:"Take a look at some basic geometric objects: line, <a href='ray'>ray</a>, point, etc. Play with these geometric objects. Notice how they move.",
+        definition:"Take a look at some basic geometric objects: line, <a href='Ray'>ray</a>, point, etc. Play with these geometric objects. Notice how they move.",
       }
     );
     Wiki.insert(
-      { name: "ray",
+      { name: "Ray",
         slug: "ray",
         definition:"what is a ray? a ray is a line with a direction, think about lazers, that is what a ray is. Lorem Ipsom",
       }

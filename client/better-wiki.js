@@ -2,7 +2,9 @@ Wiki = new Meteor.Collection("wiki");
 Meteor.subscribe("Link-List");
 Links = new Meteor.Collection("links");
 // declare vars
-var editor;
+var editor, newItemEditor;
+Session.set('edit_id',null);
+Session.set('delete_id',null);
 
 Router.map(function () {
   this.route('index', {
@@ -124,6 +126,9 @@ Template.topBar.events({
       };
       $('#searchbar').blur();
     };
+  },
+  'click .fa-plus': function () {
+    Router.go('/additem');
   }
 });
 
@@ -148,30 +153,28 @@ Template.zmenu.rendered = function () {
           UI.getElementData(after).order
         );
       }
-
       Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
-      // // Meteor.call(updateLinkOrder, el.$ui.data()._id, newRank);
       console.log(newRank);
     }
   })
 }
-
-// probably useless now due to zmenu
-Template.menu.linklist = function () {
-  // SORT by order 
-  return Links.find();
-};
 
 Template.zmenu.linklist = function () {
   // SORT by order 
   return Links.find({}, {sort:{order:1}});
 };
 
-Template.zmenu.current = function () {
-  if (this.slug === Router.current().path) {
-    return 'current';
-  } else if ( ('/' + this.slug) === Router.current().path) {
-    return 'current';
+Template.zmenu.current = function (slug) {
+  if (slug) {
+    if ( ('/'+slug) === Router.current().path) {
+      return 'current';
+    };
+  } else {
+    if (this.slug === Router.current().path) {
+      return 'current';
+    } else if ( ('/' + this.slug) === Router.current().path) {
+      return 'current';
+    }
   }
 }
 
@@ -218,7 +221,7 @@ Template.zmenu.events({
 });
 
 Template.index.item = function () {
-  return Wiki.find();
+  return Wiki.find({},{sort:{name: 1}});
 };
 
 Template.zitem.being_edited = function () {
@@ -228,22 +231,24 @@ Template.zitem.being_edited = function () {
 Template.zitem.events ({
   'click a': function (e,t) {
     e.preventDefault();
-    var self = $(e.target);
-    // console.log(self);
-    if (self.attr('target') === '_blank') {
-      window.open(self.attr('href'),'_blank');
-    } else {
-      if (self.parent().hasClass('sxc') && (self.siblings().size() > 0)) {
-          var def = self.next('.panel');
-          def.toggleClass('hide');
+    if (Session.equals('edit_id',null)) {
+      var self = $(e.target);
+      // console.log(self);
+      if (self.attr('target') === '_blank') {
+        window.open(self.attr('href'),'_blank');
       } else {
-        //wrap the link
-        self.wrap("<span class='sxc'></span>");
-        var name = self[0]['attributes']['href']['textContent'];
-        var parent = self.parent()[0];
-        UI.insert(UI.renderWithData(Template.inneritem, {zname: name}), parent);
+        if (self.parent().hasClass('sxc') && (self.siblings().size() > 0)) {
+            var def = self.next('.panel');
+            def.toggleClass('hide');
+        } else {
+          //wrap the link
+          self.wrap("<span class='sxc'></span>");
+          var name = self[0]['attributes']['href']['textContent'];
+          var parent = self.parent()[0];
+          UI.insert(UI.renderWithData(Template.inneritem, {zname: name}), parent);
+        }
       }
-    }
+    };
   },
   'click .edit-btn': function (e,t) {
     // set edit_id to current item
@@ -289,14 +294,17 @@ Template.zitem.events ({
     var textobj = editor.serialize();
     var text = textobj['element-0']['value'];
     console.log(text);
-    // update database by calling updatetext method
-    Meteor.call('updateText', this._id, name, slug, text);
+    // update database by calling updateItem method
+    Meteor.call('updateItem', this._id, name, slug, text);
     // destroy medium-editor
     editor.deactivate();
     if (originalslug !== slug) {
       Router.go('/'+slug);
     };
   },
+  'click .fa-times': function (e,t) {
+    Session.set('delete_id', this._id);
+  }
 });
 
 Template.inneritem.getitem = function (name) {
@@ -305,7 +313,7 @@ Template.inneritem.getitem = function (name) {
 
 Template.additem.rendered = function () {
   var thispanel = this.find('.panel')
-  var newitemtext = new MediumEditor(thispanel, {
+  newItemEditor = new MediumEditor(thispanel, {
       buttons: ['bold','italic','underline','anchor','orderedlist','unorderedlist'],
       buttonLabels: 'fontawesome',
       cleanPastedHTML: true,
@@ -313,6 +321,56 @@ Template.additem.rendered = function () {
       targetBlank: true,
     });
 }
+
+Template.additem.events({
+  'click .fa-save': function (e,t) {
+    // destroy inner panels
+    var thispanel = $(e.target).parent().next('.panel');
+    thispanel.find('.panel').remove();
+    // unwrap all instances of span.sxc 
+    thispanel.find('.sxc a').unwrap();
+    // get the name 
+    var zname = $('#add-item-title').val().trim();
+    var name = zname.replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ');
+    console.log('name: '+name);
+    // get the slug
+    var slug = generateSlug(name);
+    console.log('slug: '+slug);
+    // get the new text
+    var textobj = newItemEditor.serialize();
+    var text = textobj['element-0']['value'];
+    console.log(text);
+    // add new item to database
+    Meteor.call('newItem', name, slug, text);
+    newItemEditor.deactivate();
+    Router.go('/'+slug);
+  },
+  'click a': function (e,t) {
+    e.preventDefault();
+  }
+});
+
+Template.actionbar.showConfirm = function () {
+  if (!Session.equals('delete_id', null)) {
+    return 'show-confirm'
+  };
+}
+
+Template.actionbar.itemName = function () {
+  if (!Session.equals('delete_id', null)) {
+    return Wiki.findOne({_id:Session.get('delete_id')}).name
+  };
+}
+
+Template.actionbar.events({
+  'click .confirm-cancel': function (e,t) {
+    Session.set('delete_id', null);
+  },
+  'click .confirm-delete': function (e,t) {
+    Meteor.call('deleteItem', Session.get('delete_id'));
+    Session.set('delete_id', null);
+  }
+})
 
 var saveMenu = function () {
   Deps.flush();

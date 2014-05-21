@@ -109,14 +109,14 @@ a {
 	margin-bottom: 30px;
 	.searchbox {
 		padding: 0 0 0 5px;
-		border-bottom: 1px solid lighten(@muted, 30%);
+		border-bottom: 1px solid lighten(@muted, 35%);
 		-webkit-transition: background-color 0.5s ease-in-out;
 	    -moz-transition: background-color 0.5s ease-in-out;
 	    -o-transition: background-color 0.5s ease-in-out;
 	    transition: background-color 0.5s ease-in-out;
 	}
+	.fa-plus { border-bottom: 1px solid lighten(@muted, 35%)}
 	.blue {
-		// border-color: @link;
 		background-color: @button;
 	}
 	.search {
@@ -319,6 +319,58 @@ a {
 .panel .panel .panel {
 	background-color: darken(@base-bg, 10%);	
 }
+// confirmation box
+.confirm-overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: rgba(255, 255, 255, 0.5);
+	height: 0;
+	width: 0;
+	&.show-confirm {
+		height: 100%;
+		width: 100%;
+	}
+}
+.confirm-box-wrap {
+	position: fixed;
+	bottom: 0;
+	height: 0;
+	width: 100%;
+	background-color: @dark;
+	text-align: center;
+	color: lightgray;
+	overflow: hidden;
+	-webkit-transition: height 0.2s ease-in-out;
+    -moz-transition: height 0.2s ease-in-out;
+    -o-transition: height 0.2s ease-in-out;
+    transition: height 0.2s ease-in-out;
+    &.show-confirm {
+    	height: 100px;
+    }
+    .confirm-box {
+    	margin: 10px 0;
+    	font-size: 1.2em;
+		span {
+			font-weight: bold;
+			color: white;
+		}
+    }
+    .fa {
+    	width: 30%;
+		padding: 10px 0;
+		background-color: lighten(@dark, 5%);
+		cursor: pointer;
+		// color: @dark;
+    }
+    .confirm-delete { 
+    	&:hover{ background-color: MediumAquaMarine; color:white; }
+    }
+    .confirm-cancel { 
+    	&:hover{ background-color: tomato; color:white}
+    }
+}
+
 // typeahead 
 .medium-editor-toolbar-form-anchor .twitter-typeahead {
 	.tt-dropdown-menu {
