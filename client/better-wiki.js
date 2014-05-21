@@ -33,6 +33,20 @@ Router.map(function () {
         this.render('loading');
     }
   });
+  this.route('index', {
+    path: '/additem',
+    waitOn: function () {
+      return Meteor.subscribe('Terms');
+    },
+    template: 'additem',
+    layoutTemplate: 'appWrap',
+    action: function () {
+      if (this.ready())
+        this.render();
+      else
+        this.render('loading');
+    }
+  });
   this.route('page', {
     path:'/:slug',
     waitOn: function () {
@@ -287,6 +301,17 @@ Template.zitem.events ({
 
 Template.inneritem.getitem = function (name) {
   return Wiki.findOne({name:name});
+}
+
+Template.additem.rendered = function () {
+  var thispanel = this.find('.panel')
+  var newitemtext = new MediumEditor(thispanel, {
+      buttons: ['bold','italic','underline','anchor','orderedlist','unorderedlist'],
+      buttonLabels: 'fontawesome',
+      cleanPastedHTML: true,
+      forcePlainText: true,
+      targetBlank: true,
+    });
 }
 
 var saveMenu = function () {

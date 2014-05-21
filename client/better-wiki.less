@@ -85,7 +85,7 @@ a {
 	    justify-content: center;
 	    align-content: stretch;
 	    align-items: stretch;
-		padding: 0 20px;
+		padding: 0 30px;
 		.content {
 			width: 700px;
 		}
@@ -240,8 +240,18 @@ a {
 }
 .action-bar {
 }
-.item {
-
+#add-item {
+	.title-bar {margin-top: 0;}
+	#add-item-title {
+		border-bottom: 1px dashed gray;
+		background-color: transparent;
+		&::-webkit-input-placeholder {font-style: italic;font-weight:normal;}
+		&:-moz-placeholder {font-style: italic;font-weight:normal;}
+		&::-moz-placeholder {font-style: italic;font-weight:normal;}
+		&:-ms-input-placeholder {font-style: italic;font-weight:normal;}
+	}
+	.panel {background-color: transparent;}
+	.fa-save { float: right;}
 }
 .title-bar {
 	position: relative;

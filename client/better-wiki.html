@@ -16,9 +16,7 @@
 			{{> yield}}
 			</div>
 		</div>
-
 	</div>
-	<!-- <input type="text" id="wtf"/><button id="test">btn</button> -->
 </template>
 
 <template name="topBar">
@@ -118,6 +116,18 @@
 		</div>
 		<div class="panel" style="padding-top:10px;">
 			{{{this.definition}}}
+		</div>
+	</div>
+</template>
+
+<template name="additem">
+	<div id="add-item" class="item">
+		<div class="title-bar">
+			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
+			<i class="fa fa-save"></i>
+		</div>
+		<div class="panel" style="min-height:200px;">
+			
 		</div>
 	</div>
 </template>
