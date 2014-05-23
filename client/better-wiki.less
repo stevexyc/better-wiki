@@ -309,15 +309,27 @@ a {
 .panel {
 	padding: 20px 0;
 	background-color: @base-bg;
-}
-.panel .panel {
-	margin: 5px 0;
-	padding: 10px 20px;
-	border-left: 2px solid #ddd;
-	background-color: darken(@base-bg, 5%);	
+	.panel {
+		margin: 5px 0;
+		padding: 10px 20px;
+		border-left: 2px solid #ddd;
+		background-color: darken(@base-bg, 5%);
+		.panel {
+			background-color: darken(@base-bg, 10%);
+			.panel {
+				background-color: @base-bg;
+				.panel {
+					background-color: darken(@base-bg, 5%);	
+					.panel {
+						background-color: darken(@base-bg, 10%);	
+					}
+				}
+			}		
+		}
+	}
 }
 .panel .panel .panel {
-	background-color: darken(@base-bg, 10%);	
+	
 }
 // confirmation box
 .confirm-overlay {
