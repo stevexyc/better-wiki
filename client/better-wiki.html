@@ -14,6 +14,7 @@
 			<div class="content">
 			{{> topBar}}
 			{{> yield}}
+			{{> footer}}
 			</div>
 		</div>
 	</div>
@@ -23,7 +24,9 @@
 <template name="topBar">
 	<div class="topbar">
 		<i id="menu-toggle" class="fa fa-bars"></i>
-		<i class="fa fa-plus pull-right"></i>
+		{{#if currentUser}}
+			<i class="fa fa-plus pull-right"></i>
+		{{/if}}
 		<div class="pull-right searchbox">
 			<input type="text" id="searchbar" class="search form-control typeahead" autocomplete="off" spellcheck="off" data-source="terms"/>
 			<i class="fa fa-search"></i>
@@ -35,12 +38,17 @@
 	<div class="menu">
 		<ul>
 			<li>
+				{{> loginButtons}}
+			</li>
+			<li>
 				<div class="menu-heading">Pages</div>
 				<ul id="page-menu">
 				{{#each linklist}}
 					<li class="sub-lvl-link {{current}}">
 						<a href="{{this.slug}}">{{this.title}}</a>
+						{{#if currentUser}}
 						<i class="fa fa-times-circle delete-link"></i>
+						{{/if}}
 					</li>
 				{{/each}}
 					<li class="add-to-menu">
@@ -50,9 +58,6 @@
 			</li>
 			<li class="{{current 'index'}}">
 				<a href="/index">Index</a></li>
-			<li>
-				<!-- <a href="#">Users</a> -->
-			</li>
 		</ul>
 	</div>
 	
@@ -64,12 +69,10 @@
 
 <template name="index">
 	<div class="page-title">
-		<h1>Index</h1>
+		<h3>Index</h3>
 	</div>
 	{{#each item}}
-		<div class="index-item">
-			{{> zitem}}
-		</div>
+		{{> zitem}}
 	{{/each}}
 </template>
 
@@ -84,8 +87,10 @@
 			{{#if being_edited}}
 				<span class="btn save-btn"></span>
 			{{else}}
+				{{#if currentUser}}
 				<i class="fa fa-times pull-right"></i>
 				<span class="btn edit-btn"></span> 
+				{{/if}}
 			{{/if}}
 		</div>
 		<div class="panel" style="padding-top:10px;">
@@ -98,7 +103,9 @@
 	<div id="add-item" class="item">
 		<div class="title-bar">
 			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
+			{{#if currentUser}}
 			<i class="fa fa-save"></i>
+			{{/if}}
 		</div>
 		<div class="panel">
 		</div>
@@ -108,7 +115,10 @@
 <template name="inneritem">
 	{{#with getitem zname}}
 	<div class="panel" contenteditable="false">
-		<b>{{this.name}}: </b>
+		<span style="display:block">
+			<b>{{this.name}}: </b>
+		 	<i class="fa fa-external-link-square innerlink"></i>
+		</span>
 		{{{this.definition}}}
 	</div>
 	{{/with}}
@@ -122,6 +132,13 @@
 		</div>
 		<i class="fa fa-check confirm-delete"> Delete</i>
 		<i class="fa fa-times confirm-cancel"> Cancel</i>
+	</div>
+</template>
+
+<template name="footer">
+	<div class="footer-wrap">
+<!-- 		Made with Meteor, Medium-Editor-js, Jquery-ui-Sortable, <br/> 
+		Typeahead, FontAwesome & <i class="fa fa-heart"></i>, by Steve Chen -->
 	</div>
 </template>
 

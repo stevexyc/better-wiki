@@ -60,6 +60,10 @@ Meteor.publish('Link-List', function () {
   return Links.find();
 })
 
+Accounts.config({
+  forbidClientAccountCreation: true
+})
+
 Meteor.startup(function () {
   if (Links.find().count() === 0) {
     Links.insert({
@@ -97,5 +101,12 @@ Meteor.startup(function () {
         definition:"what is a ray? a ray is a line with a direction, think about lazers, that is what a ray is. Lorem Ipsom",
       }
     );
-  }
+  };
+  if (Meteor.users.find().count() === 0) {
+    Accounts.createUser({
+      username: 'admin',
+      email: 'info@stevexchen.com',
+      password: 'imadoofus',
+    })
+  };
 });

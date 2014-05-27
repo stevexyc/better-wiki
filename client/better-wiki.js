@@ -132,31 +132,61 @@ Template.topBar.events({
   }
 });
 
-Template.zmenu.rendered = function () {
-  this.$('#page-menu').sortable({
-    items: ">li:not(.add-to-menu)",
-    stop: function (event, ui) {
-      var el = ui.item.get(0);
-      var before = ui.item.prev().get(0);
-      var after = ui.item.next(':not(.add-to-menu)').get(0);
+Deps.autorun (function () {
+  if (Meteor.user()) {
+    $('#page-menu').sortable({
+      items: ">li:not(.add-to-menu)",
+      stop: function (event, ui) {
+        var el = ui.item.get(0);
+        var before = ui.item.prev().get(0);
+        var after = ui.item.next(':not(.add-to-menu)').get(0);
 
-      var newRank;
-      if (!before) { // moving to the top of the list
-        newRank = calcRank.beforeFirst(UI.getElementData(after).order);
+        var newRank;
+        if (!before) { // moving to the top of the list
+          newRank = calcRank.beforeFirst(UI.getElementData(after).order);
 
-      } else if (!after) { // moving to the bottom of the list
-        newRank = calcRank.afterLast(UI.getElementData(before).order);
+        } else if (!after) { // moving to the bottom of the list
+          newRank = calcRank.afterLast(UI.getElementData(before).order);
 
-      } else {
-        newRank = calcRank.between(
-          UI.getElementData(before).order,
-          UI.getElementData(after).order
-        );
+        } else {
+          newRank = calcRank.between(
+            UI.getElementData(before).order,
+            UI.getElementData(after).order
+          );
+        }
+        Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
+        console.log(newRank);
       }
-      Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
-      console.log(newRank);
-    }
-  })
+    });
+  } else {
+    $('#page-menu').sortable('destroy');
+  }
+});
+Template.zmenu.rendered = function () {
+  // this.$('#page-menu').sortable({
+  //   items: ">li:not(.add-to-menu)",
+  //   stop: function (event, ui) {
+  //     var el = ui.item.get(0);
+  //     var before = ui.item.prev().get(0);
+  //     var after = ui.item.next(':not(.add-to-menu)').get(0);
+
+  //     var newRank;
+  //     if (!before) { // moving to the top of the list
+  //       newRank = calcRank.beforeFirst(UI.getElementData(after).order);
+
+  //     } else if (!after) { // moving to the bottom of the list
+  //       newRank = calcRank.afterLast(UI.getElementData(before).order);
+
+  //     } else {
+  //       newRank = calcRank.between(
+  //         UI.getElementData(before).order,
+  //         UI.getElementData(after).order
+  //       );
+  //     }
+  //     Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
+  //     console.log(newRank);
+  //   }
+  // });
 }
 
 Template.zmenu.linklist = function () {
@@ -275,29 +305,38 @@ Template.zitem.events ({
   'click .save-btn': function (e,t) {
     // set edit_id to null
     Session.set('edit_id', null);
+    // destroy medium-editor
+    editor.deactivate();
     // destroy inner panels
     var thispanel = $(e.target).parent().next('.panel');
     thispanel.find('.panel').remove();
     // unwrap all instances of span.sxc 
     thispanel.find('.sxc a').unwrap();
     // get the name 
-    // var name = this.name;
     var zname = $('#'+this._id+' .edit-title').val().trim();
     var name = zname.replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ');
-    console.log('name: '+name);
+    // console.log('name: '+name);
     // get the slug 
     var originalslug = this.slug;
     // var slug = name.replace(/ /g,'-').toLowerCase();
     var slug = generateSlug(name);
     console.log('slug: '+slug);
+    // supposed to fix medium editor glitch
+    var tmpfix = $('<p></p>');
+    thispanel.append(tmpfix);
+    tmpfix.remove();
     // get the new text
     var textobj = editor.serialize();
     var text = textobj['element-0']['value'];
     console.log(text);
+    // this.definition = text;
+    // destroy other editing items
+    if (typeof editor != 'undefined') {
+      editor.deactivate();
+      delete window.editor;
+    };
     // update database by calling updateItem method
     Meteor.call('updateItem', this._id, name, slug, text);
-    // destroy medium-editor
-    editor.deactivate();
     if (originalslug !== slug) {
       Router.go('/'+slug);
     };
@@ -310,6 +349,13 @@ Template.zitem.events ({
 Template.inneritem.getitem = function (name) {
   return Wiki.findOne({name:name});
 }
+
+Template.inneritem.events({
+  'click .innerlink': function (e,t) {
+    Deps.flush();
+    Router.go('/'+this.slug);
+  }
+})
 
 Template.additem.rendered = function () {
   var thispanel = this.find('.panel')
@@ -324,6 +370,8 @@ Template.additem.rendered = function () {
 
 Template.additem.events({
   'click .fa-save': function (e,t) {
+    // destroy medium-editor
+    newItemEditor.deactivate();
     // destroy inner panels
     var thispanel = $(e.target).parent().next('.panel');
     thispanel.find('.panel').remove();
@@ -336,13 +384,16 @@ Template.additem.events({
     // get the slug
     var slug = generateSlug(name);
     console.log('slug: '+slug);
+    // supposed to fix medium editor glitch
+    var tmpfix = $('<p></p>');
+    thispanel.append(tmpfix);
+    tmpfix.remove();
     // get the new text
     var textobj = newItemEditor.serialize();
     var text = textobj['element-0']['value'];
     console.log(text);
     // add new item to database
     Meteor.call('newItem', name, slug, text);
-    newItemEditor.deactivate();
     Router.go('/'+slug);
   },
   'click a': function (e,t) {
@@ -414,4 +465,10 @@ var calcRank = {
 };
 
 
+Accounts.config({
+  forbidClientAccountCreation: true
+});
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+})
 

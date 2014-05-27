@@ -12,3 +12,6 @@ font-awesome-4-less
 typeahead
 iron-router
 jquery-ui-sortable
+accounts-ui
+accounts-password
+accounts-base
