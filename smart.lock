@@ -2,18 +2,12 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "medium-editor-updated": {},
       "font-awesome-4-less": {},
       "typeahead": {},
       "iron-router": {},
       "jquery-ui-sortable": {}
     },
     "packages": {
-      "medium-editor-updated": {
-        "git": "https://github.com/donflopez/meteor-medium-editor.git",
-        "tag": "v1.2.0",
-        "commit": "6d2f34b560b2682341aae23fc78251ccea504cd8"
-      },
       "font-awesome-4-less": {
         "git": "https://github.com/svub/fontawesome4-less.git",
         "tag": "v4.3.7",

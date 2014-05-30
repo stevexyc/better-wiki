@@ -7,7 +7,6 @@ standard-app-packages
 insecure
 jquery
 less
-medium-editor-updated
 font-awesome-4-less
 typeahead
 iron-router
@@ -15,3 +14,4 @@ jquery-ui-sortable
 accounts-ui
 accounts-password
 accounts-base
+medium-editor-wiki
