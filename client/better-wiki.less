@@ -264,7 +264,7 @@ a {
 		&:-ms-input-placeholder {font-style: italic;font-weight:normal;}
 	}
 	.panel {background-color: transparent;}
-	.fa-save { float: right;}
+	.fa-save,.fa-minus { float: right;}
 }
 .title-bar {
 	position: relative;
@@ -376,35 +376,53 @@ a {
 	color: lightgray;
 	overflow: hidden;
 	-webkit-transition: height 0.2s ease-in-out;
-    -moz-transition: height 0.2s ease-in-out;
-    -o-transition: height 0.2s ease-in-out;
-    transition: height 0.2s ease-in-out;
-    &.show-confirm {
-    	height: 100px;
-    }
-    .confirm-box {
-    	margin: 10px 0;
-    	font-size: 1.2em;
+   	-moz-transition: height 0.2s ease-in-out;
+   	-o-transition: height 0.2s ease-in-out;
+   	 transition: height 0.2s ease-in-out;
+    	&.show-confirm {
+		height: 100px;
+   	 }
+   	 .confirm-box {
+    		margin: 10px 0;
+    		font-size: 1.2em;
 		span {
 			font-weight: bold;
 			color: white;
 		}
-    }
-    .fa {
-    	width: 30%;
+    	}
+	.fa {
+	width: 30%;
 		padding: 10px 0;
 		background-color: lighten(@dark, 5%);
 		cursor: pointer;
 		// color: @dark;
-    }
-    .confirm-delete { 
-    	&:hover{ background-color: MediumAquaMarine; color:white; }
-    }
-    .confirm-cancel { 
-    	&:hover{ background-color: tomato; color:white}
-    }
+	}
+	.confirm-delete { 
+		&:hover{ background-color: MediumAquaMarine; color:white; }
+	}
+	.confirm-cancel { 
+		&:hover{ background-color: tomato; color:white}
+	}
 }
-
+// additembox
+.additem-wrap {
+	position: fixed;
+	bottom: 0;
+	height: 0;
+	width: 100%;
+	overflow: hidden;
+	background-color: @button;
+	-webkit-transition: height 0.2s ease-in-out;
+   	-moz-transition: height 0.2s ease-in-out;
+   	-o-transition: height 0.2s ease-in-out; 
+	transition: height 0.2s ease-in-out;
+	&.show-additem {
+		height:600px;
+	}
+	.item {
+		margin: 20px 30px 0;
+	}
+}
 // typeahead 
 .medium-editor-toolbar-form-anchor .twitter-typeahead {
 	.tt-dropdown-menu {

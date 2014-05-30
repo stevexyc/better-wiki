@@ -5,6 +5,7 @@ Links = new Meteor.Collection("links");
 var editor, newItemEditor;
 Session.set('edit_id',null);
 Session.set('delete_id',null);
+Session.set('add_item',false);
 
 Router.map(function () {
   this.route('index', {
@@ -128,7 +129,8 @@ Template.topBar.events({
     };
   },
   'click .fa-plus': function () {
-    Router.go('/additem');
+    Session.set('add_item', true);	
+    //Router.go('/additem');
   }
 });
 
@@ -357,6 +359,12 @@ Template.inneritem.events({
   }
 })
 
+Template.additembox.showAdditem = function() {
+  if (Session.equals('add_item', true)) {
+    return 'show-additem';
+  } 
+}
+
 Template.additem.rendered = function () {
   var thispanel = this.find('.panel')
   newItemEditor = new MediumEditor(thispanel, {
@@ -394,10 +402,13 @@ Template.additem.events({
     console.log(text);
     // add new item to database
     Meteor.call('newItem', name, slug, text);
-    Router.go('/'+slug);
+    // Router.go('/'+slug);
   },
   'click a': function (e,t) {
     e.preventDefault();
+  },
+  'click .fa-minus': function(e,t){
+    Session.set('add_item',false);
   }
 });
 
@@ -421,7 +432,7 @@ Template.actionbar.events({
     Meteor.call('deleteItem', Session.get('delete_id'));
     Session.set('delete_id', null);
   }
-})
+});
 
 var saveMenu = function () {
   Deps.flush();
