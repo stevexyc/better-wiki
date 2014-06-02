@@ -5,6 +5,7 @@ Links = new Meteor.Collection("links");
 var editor, newItemEditor;
 Session.set('edit_id',null);
 Session.set('delete_id',null);
+Session.set('add_item',false);
 
 Router.map(function () {
   this.route('index', {
@@ -128,7 +129,8 @@ Template.topBar.events({
     };
   },
   'click .fa-plus': function () {
-    Router.go('/additem');
+    // Router.go('/additem');
+    Session.set('add_item',true);
   }
 });
 
@@ -162,32 +164,6 @@ Deps.autorun (function () {
     $('#page-menu').sortable('destroy');
   }
 });
-Template.zmenu.rendered = function () {
-  // this.$('#page-menu').sortable({
-  //   items: ">li:not(.add-to-menu)",
-  //   stop: function (event, ui) {
-  //     var el = ui.item.get(0);
-  //     var before = ui.item.prev().get(0);
-  //     var after = ui.item.next(':not(.add-to-menu)').get(0);
-
-  //     var newRank;
-  //     if (!before) { // moving to the top of the list
-  //       newRank = calcRank.beforeFirst(UI.getElementData(after).order);
-
-  //     } else if (!after) { // moving to the bottom of the list
-  //       newRank = calcRank.afterLast(UI.getElementData(before).order);
-
-  //     } else {
-  //       newRank = calcRank.between(
-  //         UI.getElementData(before).order,
-  //         UI.getElementData(after).order
-  //       );
-  //     }
-  //     Meteor.call('updateLinkOrder', UI.getElementData(el)._id, newRank);
-  //     console.log(newRank);
-  //   }
-  // });
-}
 
 Template.zmenu.linklist = function () {
   // SORT by order 
@@ -245,10 +221,11 @@ Template.zmenu.events({
     console.log(this._id);
     Meteor.call('deleteLink',this._id);
   },
-  'click #test': function () {
-    // saveMenu();
-  }
 });
+
+Template.indexlist.item = function() {
+	return Wiki.find({},{sort:{name:1}});
+}
 
 Template.index.item = function () {
   return Wiki.find({},{sort:{name: 1}});
@@ -357,6 +334,12 @@ Template.inneritem.events({
   }
 })
 
+Template.additembox.showAdditem = function() {
+  if (Session.equals('add_item', true)) {
+    return 'show-additem';
+  } 
+}
+
 Template.additem.rendered = function () {
   var thispanel = this.find('.panel')
   newItemEditor = new MediumEditor(thispanel, {
@@ -394,10 +377,13 @@ Template.additem.events({
     console.log(text);
     // add new item to database
     Meteor.call('newItem', name, slug, text);
-    Router.go('/'+slug);
+    resetAddItem();
   },
   'click a': function (e,t) {
     e.preventDefault();
+  },
+  'click .fa-minus': function(e,t){
+    Session.set('add_item',false);
   }
 });
 
@@ -463,6 +449,13 @@ var calcRank = {
     return lastRank + 1;
   }
 };
+
+var resetAddItem = function () {
+  $('#add-item-title').val('');
+  $('#add-item .panel').html('');
+  newItemEditor.activate();
+  Session.set('add_item',false);
+}
 
 
 Accounts.config({

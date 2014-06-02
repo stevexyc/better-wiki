@@ -24,13 +24,10 @@ html,body {
 	height: 100%;
 }
 body {
-   // font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-family: "Open Sans", Helvetica, Arial, "Lucida Grande", sans-serif;
    font-weight: 300;
    line-height: 1.5em;
-   // max-width: 800px;
    margin: 0 auto;
-   // padding: 0 20px;
 }
 input {
 	font-family: "Open Sans", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -62,52 +59,57 @@ a {
 		}
 	}
 }
+/****************************************************
+		 app-wrap
+****************************************************/
 .app-wrap {
 	min-width: 100%;
 	min-height: 100%;
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: stretch;
-    align-items: stretch;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-content: stretch;
+	align-items: stretch;
 	#menu-wrap {
 		margin: 0px;
 		width: 200px;
 		display:flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
-	    justify-content: flex-start;
-	    align-content: stretch;
-	    align-items: stretch;
-    	-webkit-transition: all 0.5s ease-in-out;
-        -moz-transition: all 0.5s ease-in-out;
-        -o-transition: all 0.5s ease-in-out;
-        transition: all 0.5s ease-in-out;
+		justify-content: flex-start;
+		align-content: stretch;
+		align-items: stretch;
+		-webkit-transition: all 0.5s ease-in-out;
+		-moz-transition: all 0.5s ease-in-out;
+		-o-transition: all 0.5s ease-in-out;
+		transition: all 0.5s ease-in-out;
 		&.hide-menu {
 			margin-left: -200px;
 			// border-right: 5px solid @dark;
 		}
 	}
 	#content-wrap {
+		position: relative;
 		width: 280px;
 		flex-grow: 1;
 		display:flex;
-	    flex-direction: row;
-	    flex-wrap: nowrap;
-	    justify-content: center;
-	    align-content: stretch;
-	    align-items: stretch;
-		padding: 0 30px;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-content: stretch;
+		align-items: stretch;
 		.content {
 			width: 700px;
+			margin: 0 30px;
 		}
+
 	}
-	#extra-wrap {
-		width: 200px;
+	#index-wrap {
+		width: 150px;
 	}
 }
-.title-bar .fa, .topbar .fa, .page-title .fa{
+.title-bar .fa, .topbar .fa, .page-title .fa, .bar .fa{
 	color:@muted;
 	background-color: @button;
 	padding: 5px 8px;
@@ -153,7 +155,6 @@ a {
 .menu {
 	min-height: 100%;
 	width: 100%;
-	// width: 180px;
 	background-color: @dark;
 	.menu-heading{
 		color: darken(@muted, 10%);
@@ -251,21 +252,6 @@ a {
 		}
 	}
 }
-.action-bar {
-}
-#add-item {
-	.title-bar {margin-top: 0;}
-	#add-item-title {
-		border-bottom: 1px dashed gray;
-		background-color: transparent;
-		&::-webkit-input-placeholder {font-style: italic;font-weight:normal;}
-		&:-moz-placeholder {font-style: italic;font-weight:normal;}
-		&::-moz-placeholder {font-style: italic;font-weight:normal;}
-		&:-ms-input-placeholder {font-style: italic;font-weight:normal;}
-	}
-	.panel {background-color: transparent;}
-	.fa-save { float: right;}
-}
 .title-bar {
 	position: relative;
 	margin: 20px 0 0 0;
@@ -344,6 +330,11 @@ a {
 		}
 	}
 }
+.inneritem-title {
+	font-size: 0.9em;
+	font-weight: bold;
+	color: @muted;
+}
 .innerlink {
 	float: right;
 	padding: 5px;
@@ -353,7 +344,9 @@ a {
 		color: tomato;
 	}
 }
-// confirmation box
+/******************************/
+//     confirmation box       //
+/******************************/
 .confirm-overlay {
 	position: fixed;
 	left: 0;
@@ -404,8 +397,69 @@ a {
     	&:hover{ background-color: tomato; color:white}
     }
 }
-
-// typeahead 
+/******************************/
+//        additembox          //
+/******************************/
+.additem-wrap {
+	padding-top: 0px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 0;
+	width: 100%;
+	overflow: hidden;
+	border-bottom: 1px solid darken(@button, 15%);
+	background-color: darken(@button, 5%);
+	-webkit-transition: height 0.5s ease-in-out;
+   	-moz-transition: height 0.5s ease-in-out;
+   	-o-transition: height 0.5s ease-in-out; 
+	transition: height 0.5s ease-in-out;
+	&.show-additem {
+		height:600px;
+	}
+	.additem-box {
+		background-color: @button;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-content: stretch;
+		align-items: stretch;
+		width: 100%;
+		min-height: 100%;
+	}
+	.fa { 
+		float:right; 
+		margin-left: .3em;
+		margin-top: 1px; 
+		background-color: darken(@button, 5%);
+	}
+	.bar { 
+		height: 28px; 
+	}
+	#add-item {
+		.title-bar {margin-top: 0;}
+		#add-item-title {
+			border-bottom: 1px dashed gray;
+			background-color: transparent;
+			&::-webkit-input-placeholder {font-style: italic;font-weight:normal;}
+			&:-moz-placeholder {font-style: italic;font-weight:normal;}
+			&::-moz-placeholder {font-style: italic;font-weight:normal;}
+			&:-ms-input-placeholder {font-style: italic;font-weight:normal;}
+		}
+		.panel {background-color: transparent;}
+	}
+	.item {
+		width: 700px;
+		margin: 0 30px;
+	}
+	.additem-small {
+		display: none;
+	}
+}
+/******************************/
+//        typeahead           //
+/******************************/ 
 .medium-editor-toolbar-form-anchor .twitter-typeahead {
 	.tt-dropdown-menu {
 		padding: 5px 0;
@@ -427,7 +481,9 @@ a {
 		}
 	}
 }
-// login
+/******************************/
+//          login             //
+/******************************/
 #login-buttons a, .accounts-dialog a{
 	text-decoration: none;
 }
@@ -453,15 +509,14 @@ a {
 #login-buttons .login-button:hover, .accounts-dialog .login-button:hover {
 	background-color:  MediumAquaMarine;
 }
-// footer
+/******************************/
+//          footer            //
+/******************************/
 .footer-wrap {
 	height: 100px;
 	text-align: center;
 	padding-top: 40px;
-	margin-top: 200px;
-	// margin-left: -30px;
-	// margin-right: -30px;
-	// background-color: @button;
+	margin-bottom: 200px;
 	color: @muted;
 }
 .btn-link {
@@ -479,7 +534,9 @@ button {
 	border-radius: 0;
 	background-color: @button;
 }
-// utils
+/******************************/
+//          utils             //
+/******************************/
 .caps {	text-transform: capitalize; }
 .pull-right {float: right;}
 .hide {

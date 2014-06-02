@@ -13,10 +13,11 @@
 		<div id="content-wrap">
 			<div class="content">
 			{{> topBar}}
-			{{> yield}}
+			{{> yield}}	
 			{{> footer}}
 			</div>
-		</div>
+		{{> additembox}}
+		</div>		
 	</div>
 	{{> actionbar}}
 </template>
@@ -60,12 +61,22 @@
 				<a href="/index">Index</a></li>
 		</ul>
 	</div>
-	
 </template>
 
 <template name="page">
 	{{> zitem}}
 </template>
+
+<template name="indexlist">
+	<div class="index-list">
+	{{#each item}}
+		<div class="index-item">
+			<a href="/{{this.slug}}">{{this.name}}</a>
+		</div>
+	{{/each}}
+	</div>
+</template>
+
 
 <template name="index">
 	<div class="page-title">
@@ -99,13 +110,25 @@
 	</div>
 </template>
 
+<template name="additembox">
+	<div class="additem-wrap {{showAdditem}}">
+		<div class="additem-box">
+		{{> additem }}
+		</div>
+	</div>
+</template>
+
+
 <template name="additem">
 	<div id="add-item" class="item">
-		<div class="title-bar">
-			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
+		<div class="bar">
 			{{#if currentUser}}
+			<i class="fa fa-minus"></i>		
 			<i class="fa fa-save"></i>
 			{{/if}}
+		</div>
+		<div class="title-bar">
+			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
 		</div>
 		<div class="panel">
 		</div>
@@ -116,7 +139,7 @@
 	{{#with getitem zname}}
 	<div class="panel" contenteditable="false">
 		<span style="display:block">
-			<b>{{this.name}}: </b>
+			<span class="inneritem-title">{{this.name}}</span>
 		 	<i class="fa fa-external-link-square innerlink"></i>
 		</span>
 		{{{this.definition}}}

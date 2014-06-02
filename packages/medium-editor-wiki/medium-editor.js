@@ -753,11 +753,9 @@ if (typeof module === 'object') {
             this.savedSelection = saveSelection();
             this.anchorForm.style.display = 'block';
             this.keepToolbarAlive = true;
-            this.anchorInput.focus();
             this.anchorInput.value = link_value || '';
-        },
-
-        bindAnchorForm: function () {
+	    //destoy typeahead
+	    $(this.anchorInput).typeahead('destroy');
             //initialize typeahead
             $(this.anchorInput).typeahead({
               hint: true,
@@ -768,7 +766,10 @@ if (typeof module === 'object') {
               displayKey: 'value',
               source: substringMatcher()
             });
+            this.anchorInput.focus();
+	},
 
+        bindAnchorForm: function () {
             var linkCancel = this.anchorForm.querySelector('a'),
                 self = this;
             this.anchorForm.addEventListener('click', function (e) {
