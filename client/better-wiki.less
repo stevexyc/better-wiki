@@ -180,7 +180,7 @@ a {
 				display: block;
 				line-height: 1em;
 				padding: 10px 0;
-				text-transform: capitalize;
+				//text-transform: capitalize;
 				&:hover {
 					color: @link;
 				}
@@ -255,7 +255,7 @@ a {
 .title-bar {
 	position: relative;
 	margin: 20px 0 0 0;
-	text-transform: capitalize;
+	//text-transform: capitalize;
 	.title {
 		font-size: 2em;
 		font-weight: bold;
@@ -268,17 +268,18 @@ a {
 		font-weight: bold;
 		border:none;
 		outline: none;
+		border-bottom: 1px dashed gray; 
+		background-color: transparent;
 	}
 }
 .index-item {
-	.title-bar .title {
-		font-size: 18px;
-		font-weight: bold;
-	}
+	padding: 10px 15px 0 15px;
+	background-color: #f8f8f8;
 }
 .editbox {
 	border: 1px dotted gray;
 	padding: 0 15px;
+	margin-top: -10px;
 	margin-left: -15px;
 	margin-right: -15px;
 }
@@ -307,7 +308,7 @@ a {
 }
 .panel {
 	padding: 20px 0;
-	background-color: @base-bg;
+	//background-color: @base-bg;
 	p {
 		margin-bottom: .8em;
 	}
@@ -537,7 +538,7 @@ button {
 /******************************/
 //          utils             //
 /******************************/
-.caps {	text-transform: capitalize; }
+//.caps {	text-transform: capitalize; }
 .pull-right {float: right;}
 .hide {
 	display: none;

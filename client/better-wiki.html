@@ -67,28 +67,22 @@
 	{{> zitem}}
 </template>
 
-<template name="indexlist">
-	<div class="index-list">
-	{{#each item}}
-		<div class="index-item">
-			<a href="/{{this.slug}}">{{this.name}}</a>
-		</div>
-	{{/each}}
-	</div>
-</template>
-
-
 <template name="index">
 	<div class="page-title">
 		<h3>Index</h3>
 	</div>
 	{{#each item}}
-		{{> zitem}}
+		<div>
+			<a class="sxc-zitem">{{this.name}}</a>
+			<div class="index-item hide">
+			{{> zitem}}
+			</div>
+		</div>
 	{{/each}}
 </template>
 
 <template name="zitem">
-	<div class="item {{#if being_edited}}editbox{{/if}}" id="{{_id}}">
+	<div class="item {{#if being_edited}}editbox{{/if}}" id="{{_id}}" name="{{_id}}">
 		<div class="title-bar">
 			{{#if being_edited}}
 				<input class="edit-title" type="text" value="{{this.name}}">
@@ -140,7 +134,9 @@
 	<div class="panel" contenteditable="false">
 		<span style="display:block">
 			<span class="inneritem-title">{{this.name}}</span>
-		 	<i class="fa fa-external-link-square innerlink"></i>
+		 	<a href="/{{this.slug}}" class="slug">
+				<i class="fa fa-external-link-square innerlink"></i>
+			</a>
 		</span>
 		{{{this.definition}}}
 	</div>

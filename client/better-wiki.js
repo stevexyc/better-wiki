@@ -223,13 +223,20 @@ Template.zmenu.events({
   },
 });
 
-Template.indexlist.item = function() {
-	return Wiki.find({},{sort:{name:1}});
-}
-
 Template.index.item = function () {
   return Wiki.find({},{sort:{name: 1}});
 };
+
+Template.index.events({
+	'click .sxc-zitem': function(e,t) {
+		e.preventDefault();
+		var self = $(e.target);
+		if (self.siblings().size()>0) {
+			var def = self.next('.index-item');
+			def.toggleClass('hide');
+		}		
+	}
+});
 
 Template.zitem.being_edited = function () {
   return Session.equals('edit_id', this._id);
@@ -240,9 +247,11 @@ Template.zitem.events ({
     e.preventDefault();
     if (Session.equals('edit_id',null)) {
       var self = $(e.target);
-      // console.log(self);
+			//console.log(self);
       if (self.attr('target') === '_blank') {
         window.open(self.attr('href'),'_blank');
+			} else if (self.parent().hasClass('slug')) {
+				//console.log('slug');
       } else {
         if (self.parent().hasClass('sxc') && (self.siblings().size() > 0)) {
             var def = self.next('.panel');
