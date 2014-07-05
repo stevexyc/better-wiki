@@ -242,6 +242,10 @@ Template.zitem.being_edited = function () {
   return Session.equals('edit_id', this._id);
 }
 
+Template.zitem.defi = function() {
+	return this.definition;
+}
+
 Template.zitem.events ({
   'click a': function (e,t) {
     e.preventDefault();
@@ -251,7 +255,7 @@ Template.zitem.events ({
       if (self.attr('target') === '_blank') {
         window.open(self.attr('href'),'_blank');
 			} else if (self.parent().hasClass('slug')) {
-				//console.log('slug');
+				Router.go('/'+this.slug);
       } else {
         if (self.parent().hasClass('sxc') && (self.siblings().size() > 0)) {
             var def = self.next('.panel');
@@ -307,22 +311,19 @@ Template.zitem.events ({
     // var slug = name.replace(/ /g,'-').toLowerCase();
     var slug = generateSlug(name);
     console.log('slug: '+slug);
-    // supposed to fix medium editor glitch
-    var tmpfix = $('<p></p>');
-    thispanel.append(tmpfix);
-    tmpfix.remove();
     // get the new text
     var textobj = editor.serialize();
     var text = textobj['element-0']['value'];
+		// replace the text with html
+		thispanel.html(text);
     console.log(text);
-    // this.definition = text;
     // destroy other editing items
     if (typeof editor != 'undefined') {
       editor.deactivate();
       delete window.editor;
     };
     // update database by calling updateItem method
-    Meteor.call('updateItem', this._id, name, slug, text);
+		Meteor.call('updateItem', this._id, name, slug, text);
     if (originalslug !== slug) {
       Router.go('/'+slug);
     };

@@ -92,13 +92,16 @@
 			{{#if being_edited}}
 				<span class="btn save-btn"></span>
 			{{else}}
+				<a href="/{{this.slug}}" class="slug outerslug">
+					<i class="fa fa-link pull-right"></i>
+				</a>
 				{{#if currentUser}}
 				<i class="fa fa-times pull-right"></i>
 				<span class="btn edit-btn"></span> 
 				{{/if}}
 			{{/if}}
 		</div>
-		<div class="panel" style="padding-top:10px;">
+		<div class="panel" style="">
 			{{{this.definition}}}
 		</div>
 	</div>
@@ -135,7 +138,7 @@
 		<span style="display:block">
 			<span class="inneritem-title">{{this.name}}</span>
 		 	<a href="/{{this.slug}}" class="slug">
-				<i class="fa fa-external-link-square innerlink"></i>
+				<i class="fa fa-link innerlink"></i>
 			</a>
 		</span>
 		{{{this.definition}}}
