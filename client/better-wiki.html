@@ -11,10 +11,12 @@
 			{{> zmenu}}
 		</div>
 		<div id="content-wrap">
+      <div class="topbar-wrap">
+        {{> topBar}}
+      </div>
 			<div class="content">
-			{{> topBar}}
-			{{> yield}}	
-			{{> footer}}
+        {{> yield}}	
+        {{> footer}}
 			</div>
 		{{> additembox}}
 		</div>		
@@ -25,13 +27,14 @@
 <template name="topBar">
 	<div class="topbar">
 		<i id="menu-toggle" class="fa fa-bars"></i>
-		{{#if currentUser}}
-			<i class="fa fa-plus pull-right"></i>
-		{{/if}}
-		<div class="pull-right searchbox">
-			<input type="text" id="searchbar" class="search form-control typeahead" autocomplete="off" spellcheck="off" data-source="terms"/>
-			<i class="fa fa-search"></i>
+    <span class="flex-filler"></span>
+		<div class="search-wrap">
+			<input type="text" id="searchbar" class="search-input typeahead" autocomplete="on" spellcheck="off" data-source="terms"/>
+			<i class="topbar-search fa fa-search"></i>
 		</div>
+		{{#if currentUser}}
+			<i id="newItemBtn" class="fa fa-plus"></i>
+		{{/if}}
 	</div>
 </template>
 
@@ -42,7 +45,7 @@
 				{{> loginButtons}}
 			</li>
 			<li>
-				<div class="menu-heading">Pages</div>
+				<div class="menu-heading">Bookmarks</div>
 				<ul id="page-menu">
 				{{#each linklist}}
 					<li class="sub-lvl-link {{current}}">
@@ -53,64 +56,55 @@
 					</li>
 				{{/each}}
 					<li class="add-to-menu">
-						<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new link</a>
+						<a href="#" id="add-link"><i class="fa fa-plus-circle"></i> new bookmark</a>
 					</li>
 				</ul>
 			</li>
 			<li class="{{current 'index'}}">
-				<a href="/index">Index</a></li>
+        <div class="menu-heading">Index</div>
+        <ul id="index-list">
+          {{#each zitem}}
+          <li class="sub-lvl-link {{current}}">
+              <a href="{{this.slug}}">{{this.name}}</a>
+            </li>
+          {{/each}}
+        </ul>
+      </li>
 		</ul>
 	</div>
-</template>
-
-<template name="page">
-	{{> zitem}}
-</template>
-
-<template name="index">
-	<div class="page-title">
-		<h3>Index</h3>
-	</div>
-	{{#each item}}
-		<div>
-			<a class="sxc-zitem">{{this.name}}</a>
-			<div class="index-item hide">
-			{{> zitem}}
-			</div>
-		</div>
-	{{/each}}
 </template>
 
 <template name="zitem">
 	<div class="item {{#if being_edited}}editbox{{/if}}" id="{{_id}}" name="{{_id}}">
 		<div class="title-bar">
 			{{#if being_edited}}
-				<input class="edit-title" type="text" value="{{this.name}}">
+          <input class="edit-title" type="text" value="{{this.name}}"/><br/>
+          <span class="flex-filler"></span>
+          <input class="edit-slug" type="text" value="{{this.slug}}"/>
+          <span class="btn save-btn"></span>
 			{{else}}
 				<span class="title">{{this.name}}</span>
-			{{/if}}
-			{{#if being_edited}}
-				<span class="btn save-btn"></span>
-			{{else}}
-				<a href="/{{this.slug}}" class="slug outerslug">
-					<i class="fa fa-link pull-right"></i>
-				</a>
-				{{#if currentUser}}
-				<i class="fa fa-times pull-right"></i>
-				<span class="btn edit-btn"></span> 
-				{{/if}}
+        <span class="flex-filler"></span>
+        {{#if currentUser}}
+            <i class="fa fa-times"></i>
+            <span class="btn edit-btn"></span> 
+        {{/if}}
 			{{/if}}
 		</div>
-		<div class="panel" style="">
-			{{{this.definition}}}
-		</div>
+      {{{ this.definition }}}
 	</div>
 </template>
 
 <template name="additembox">
 	<div class="additem-wrap {{showAdditem}}">
+    <div class="add-item-bar">
+      {{#if currentUser}}
+        <i class="fa fa-save"></i>
+        <i class="fa fa-minus"></i>		
+      {{/if}}
+    </div>
 		<div class="additem-box">
-		{{> additem }}
+      {{> additem }}
 		</div>
 	</div>
 </template>
@@ -118,29 +112,23 @@
 
 <template name="additem">
 	<div id="add-item" class="item">
-		<div class="bar">
-			{{#if currentUser}}
-			<i class="fa fa-minus"></i>		
-			<i class="fa fa-save"></i>
-			{{/if}}
-		</div>
 		<div class="title-bar">
 			<input id="add-item-title" class="edit-title" type="text" placeholder="Title">
 		</div>
-		<div class="panel">
+		<div class="zpanel">
 		</div>
 	</div>
 </template>
 
 <template name="inneritem">
 	{{#with getitem zname}}
-	<div class="panel" contenteditable="false">
-		<span style="display:block">
+	<div class="zpanel" contenteditable="false">
+		<div class="inneritem-titlebar">
 			<span class="inneritem-title">{{this.name}}</span>
 		 	<a href="/{{this.slug}}" class="slug">
 				<i class="fa fa-link innerlink"></i>
 			</a>
-		</span>
+		</div>
 		{{{this.definition}}}
 	</div>
 	{{/with}}

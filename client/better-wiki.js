@@ -8,40 +8,15 @@ Session.set('delete_id',null);
 Session.set('add_item',false);
 
 Router.map(function () {
-  this.route('index', {
+  this.route('home', {
     path: '/',
     waitOn: function () {
       return Meteor.subscribe('Terms');
     },
-    template: 'index',
-    layoutTemplate: 'appWrap',
-    action: function () {
-      if (this.ready())
-        this.render();
-      else
-        this.render('loading');
-    }
-  });
-  this.route('index', {
-    path: '/index',
-    waitOn: function () {
-      return Meteor.subscribe('Terms');
+    template: 'zitem',
+    data: function () {
+      return Wiki.findOne();
     },
-    template: 'index',
-    layoutTemplate: 'appWrap',
-    action: function () {
-      if (this.ready())
-        this.render();
-      else
-        this.render('loading');
-    }
-  });
-  this.route('index', {
-    path: '/additem',
-    waitOn: function () {
-      return Meteor.subscribe('Terms');
-    },
-    template: 'additem',
     layoutTemplate: 'appWrap',
     action: function () {
       if (this.ready())
@@ -55,7 +30,7 @@ Router.map(function () {
     waitOn: function () {
       return Meteor.subscribe('Terms');
     },
-    template: 'page',
+    template: 'zitem',
     layoutTemplate: 'appWrap',
     data: function () {
       return Wiki.findOne({slug:this.params.slug})
@@ -105,14 +80,13 @@ Template.topBar.events({
     $('#menu-wrap').toggleClass('hide-menu');
   },
   'focus #searchbar': function () {
-    $('.searchbox').addClass('blue');
     Deps.flush();
     Deps.afterFlush(function () {
       $('#searchbar').select();
     })
   },
-  'blur #searchbar': function () {
-    $('.searchbox').removeClass('blue');
+  'click .topbar-search': function () {
+    $('#searchbar').focus();
   },
   'keyup #searchbar': function (e,t) {
     if (e.which === 13) {
@@ -129,7 +103,6 @@ Template.topBar.events({
     };
   },
   'click .fa-plus': function () {
-    // Router.go('/additem');
     Session.set('add_item',true);
   }
 });
@@ -166,7 +139,6 @@ Deps.autorun (function () {
 });
 
 Template.zmenu.linklist = function () {
-  // SORT by order 
   return Links.find({}, {sort:{order:1}});
 };
 
@@ -184,6 +156,9 @@ Template.zmenu.current = function (slug) {
   }
 }
 
+Template.zmenu.zitem = function () {
+  return Wiki.find();
+}
 
 Template.zmenu.events({
   'click #add-link': function (e,t) {
@@ -221,29 +196,13 @@ Template.zmenu.events({
     console.log(this._id);
     Meteor.call('deleteLink',this._id);
   },
-});
-
-Template.index.item = function () {
-  return Wiki.find({},{sort:{name: 1}});
-};
-
-Template.index.events({
-	'click .sxc-zitem': function(e,t) {
-		e.preventDefault();
-		var self = $(e.target);
-		if (self.siblings().size()>0) {
-			var def = self.next('.index-item');
-			def.toggleClass('hide');
-		}		
-	}
+  'click .menu-heading': function (e,t) {
+    $(e.target).next("ul").slideToggle(200);
+  }
 });
 
 Template.zitem.being_edited = function () {
   return Session.equals('edit_id', this._id);
-}
-
-Template.zitem.defi = function() {
-	return this.definition;
 }
 
 Template.zitem.events ({
@@ -258,7 +217,7 @@ Template.zitem.events ({
 				Router.go('/'+this.slug);
       } else {
         if (self.parent().hasClass('sxc') && (self.siblings().size() > 0)) {
-            var def = self.next('.panel');
+            var def = self.next('.zpanel');
             def.toggleClass('hide');
         } else {
           //wrap the link
@@ -280,12 +239,12 @@ Template.zitem.events ({
     };
     // destroy inner panels
     var thispanel = $(e.target).parent().next('.panel');
-    thispanel.find('.panel').remove();
+    thispanel.find('.zpanel').remove();
     // remove all instances of span.sxc 
     thispanel.find('.sxc a').unwrap();
     // create editor
     editor = new MediumEditor(thispanel, {
-      buttons: ['bold','italic','underline','anchor','orderedlist','unorderedlist'],
+      buttons: ['bold','italic','underline','image','anchor','orderedlist','unorderedlist'],
       buttonLabels: 'fontawesome',
       cleanPastedHTML: true,
       forcePlainText: true,
@@ -299,7 +258,7 @@ Template.zitem.events ({
     editor.deactivate();
     // destroy inner panels
     var thispanel = $(e.target).parent().next('.panel');
-    thispanel.find('.panel').remove();
+    thispanel.find('.zpanel').remove();
     // unwrap all instances of span.sxc 
     thispanel.find('.sxc a').unwrap();
     // get the name 
@@ -313,9 +272,8 @@ Template.zitem.events ({
     console.log('slug: '+slug);
     // get the new text
     var textobj = editor.serialize();
-    var text = textobj['element-0']['value'];
-		// replace the text with html
-		thispanel.html(text);
+    var rawtext = textobj['element-0']['value'];
+    var text = '<div class="panel">' + rawtext + '</div>';    
     console.log(text);
     // destroy other editing items
     if (typeof editor != 'undefined') {
@@ -326,6 +284,8 @@ Template.zitem.events ({
 		Meteor.call('updateItem', this._id, name, slug, text);
     if (originalslug !== slug) {
       Router.go('/'+slug);
+    } else {
+      // location.reload();
     };
   },
   'click .fa-times': function (e,t) {
@@ -350,24 +310,16 @@ Template.additembox.showAdditem = function() {
   } 
 }
 
-Template.additem.rendered = function () {
-  var thispanel = this.find('.panel')
-  newItemEditor = new MediumEditor(thispanel, {
-      buttons: ['bold','italic','underline','anchor','orderedlist','unorderedlist'],
-      buttonLabels: 'fontawesome',
-      cleanPastedHTML: true,
-      forcePlainText: true,
-      targetBlank: true,
-    });
-}
-
-Template.additem.events({
+Template.additembox.events({
+  'click .fa-minus': function(e,t){
+    Session.set('add_item',false);
+  },
   'click .fa-save': function (e,t) {
     // destroy medium-editor
     newItemEditor.deactivate();
     // destroy inner panels
-    var thispanel = $(e.target).parent().next('.panel');
-    thispanel.find('.panel').remove();
+    var thispanel = $('#add-item').next('.zpanel');
+    thispanel.find('.zpanel').remove();
     // unwrap all instances of span.sxc 
     thispanel.find('.sxc a').unwrap();
     // get the name 
@@ -377,24 +329,32 @@ Template.additem.events({
     // get the slug
     var slug = generateSlug(name);
     console.log('slug: '+slug);
-    // supposed to fix medium editor glitch
-    var tmpfix = $('<p></p>');
-    thispanel.append(tmpfix);
-    tmpfix.remove();
     // get the new text
     var textobj = newItemEditor.serialize();
-    var text = textobj['element-0']['value'];
+    var rawtext = textobj['element-0']['value'];
+    var text = '<div class="panel">' + rawtext + '</div>';
     console.log(text);
     // add new item to database
     Meteor.call('newItem', name, slug, text);
     resetAddItem();
   },
+});
+
+Template.additem.rendered = function () {
+  var thispanel = this.find('.zpanel')
+  newItemEditor = new MediumEditor(thispanel, {
+      buttons: ['bold','italic','underline','image','anchor','orderedlist','unorderedlist'],
+      buttonLabels: 'fontawesome',
+      cleanPastedHTML: true,
+      forcePlainText: true,
+      targetBlank: true,
+    });
+}
+
+Template.additem.events({
   'click a': function (e,t) {
     e.preventDefault();
   },
-  'click .fa-minus': function(e,t){
-    Session.set('add_item',false);
-  }
 });
 
 Template.actionbar.showConfirm = function () {
@@ -462,7 +422,7 @@ var calcRank = {
 
 var resetAddItem = function () {
   $('#add-item-title').val('');
-  $('#add-item .panel').html('');
+  $('#add-item .zpanel').html('');
   newItemEditor.activate();
   Session.set('add_item',false);
 }

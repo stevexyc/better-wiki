@@ -25,20 +25,20 @@ html,body {
 }
 body {
    font-family: "Open Sans", Helvetica, Arial, "Lucida Grande", sans-serif;
-   font-weight: 300;
+   font-weight: 400;
    line-height: 1.5em;
    margin: 0 auto;
 }
 input {
 	font-family: "Open Sans", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-weight: 300;
+	font-weight: 400;
 }
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 	display: inline-block;
 }
 ol, ul {
-	margin: .8em 0;
+	margin: 0;
 }
 p {
 	margin: 0;
@@ -48,6 +48,7 @@ a {
 	cursor: pointer;
 	color: @link;
 	&:hover {
+    color: darken(@link, 10%);
 		text-decoration: underline;
 	}
 	.panel {
@@ -62,6 +63,11 @@ a {
 		}
 	}
 }
+.btn {
+	cursor: pointer;
+}
+
+
 /****************************************************
 		 app-wrap
 ****************************************************/
@@ -70,10 +76,11 @@ a {
 	min-height: 100%;
 	display:flex;
 	flex-direction: row;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: flex-start;
 	align-content: stretch;
 	align-items: stretch;
+  
 	#menu-wrap {
 		margin: 0px;
 		width: 200px;
@@ -89,30 +96,227 @@ a {
 		transition: all 0.5s ease-in-out;
 		&.hide-menu {
 			margin-left: -200px;
-			// border-right: 5px solid @dark;
 		}
 	}
+
 	#content-wrap {
 		position: relative;
 		width: 280px;
 		flex-grow: 1;
 		display:flex;
-		flex-direction: row;
+		flex-direction: column;
 		flex-wrap: nowrap;
-		justify-content: center;
+		justify-content: flex-start;
 		align-content: stretch;
 		align-items: stretch;
-		.content {
-			width: 700px;
-			margin: 0 30px;
-		}
+    
+    .topbar-wrap {
+      padding-top: 1px;
+      margin-bottom: 30px;
 
-	}
-	#index-wrap {
-		width: 150px;
+    } //end topbar-wrap
+
+		.content {
+      flex-grow: 1;
+      align-self: stretch;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      padding: 0 30px;
+		} //end content
+
+	} //end content-wrap
+} //end app-wrap 
+
+/****************************************************
+		 topbar-wrap
+****************************************************/
+.topbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  background-color: @button;
+  
+  #menu-toggle {
+  }
+
+  .search-wrap {
+    padding-right: 5px;
+    -webkit-transition: background-color 0.5s ease-in-out;
+    -moz-transition: background-color 0.5s ease-in-out;
+    -o-transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
+
+    .search-input {
+      width: 80px;
+      padding: 0;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid lighten(@muted, 35%);
+      font-size: 1em;
+      background-color: transparent;
+      -webkit-transition: width 0.5s ease-in-out;
+        -moz-transition: width 0.5s ease-in-out;
+        -o-transition: width 0.5s ease-in-out;
+        transition: width 0.5s ease-in-out;
+        color:@muted;
+      &:focus {
+        width: 200px;
+        color: black;
+        background-color: white;
+      }
+    } //end search-input
+
+    .tt-dropdown-menu {
+      padding: 0;
+      background-color: @button;
+      margin-top: 1px;
+      font-size: 0.8em;
+      color: @muted;
+      .tt-suggestion {
+        padding: 3px 10px;
+        border-bottom: 1px solid darken(@button, 10%);
+        &.tt-cursor {
+          background-color: darken(@button, 10%);
+        }
+      }
+    }
+
+  } // end search-wrap
+
+  #newItemBtn {
+  }
+
+} //end topbar
+
+/****************************************************
+		Item 
+****************************************************/
+.item {
+  width: 700px;
+  //margin: 0 30px;
+  .title-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .title {
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .fa {
+      margin-right: 5px;
+    }
+    .edit-meta-container {
+      color: @muted;
+      font-size: .8em;
+      font-weight: bold;
+    }
+    .edit-title, .edit-slug {
+      font-family: inherit;
+      padding: 0;
+      margin: 0;
+      font-weight: bold;
+      border:none;
+      outline: none;
+      background-color: transparent;
+    }
+    .edit-title {
+      margin-top: -8px;
+      font-size: 1.5em;
+      border-bottom: 1px dashed gray; 
+      color: #333;
+    }
+    .edit-slug {
+      color: @muted;
+      text-align: right;
+      padding: 4px 8px;
+      align-self: baseline;
+      background-color: #eee;
+      margin-right: 5px;
+      width: 100px;
+    }
+  } //end title-bar
+  &.editbox {
+    border: 1px dotted gray;
+    padding: 24px 15px 15px 15px;
+    margin-top: -24px;
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+}
+/****************************************************
+		innerItems 
+****************************************************/
+.inneritem-titlebar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  .inneritem-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: @muted;
+  }
+  .innerlink {
+    padding: 5px 8px;
+    color: #808080;
+    cursor: pointer;
+    font-size: .8em;
+    &:hover {
+      color: tomato;
+    }
+  }
+}
+/****************************************************
+		zPanels and inner panels 
+****************************************************/
+.zpanel {
+  padding: 20px 0;
+}
+
+.panel {
+	padding: 20px 0;
+  .panel {
+    padding: 0;
+  }
+  ul, ol {
+    padding-left: 20px;
+    li > .sxc > .zpanel {
+      margin-left: -20px;
+    }
+  }
+	.zpanel {
+		padding: 15px;
+		border-left: 2px solid #ddd;
+		background-color: darken(@base-bg,7%);
+		.zpanel {
+			background-color: darken(@base-bg, 14%);
+			border-left: 2px solid #bbb;
+			.zpanel {
+				background-color: darken(@base-bg, 21%);
+				.zpanel {
+					background-color: darken(@base-bg, 15%);	
+					.zpanel {
+						background-color: darken(@base-bg, 8%);	
+            .zpanel {
+              background-color: @base-bg;
+              border-top: 1px solid #ddd;
+              border-bottom: 1px solid #ddd;
+              border-right: 1px solid #ddd;
+            }
+					}
+				}
+			}		
+		}
 	}
 }
-.title-bar .fa, .topbar .fa, .page-title .fa, .bar .fa{
+
+/****************************************************
+		buttons and .fa icons 
+****************************************************/
+.title-bar .fa, .topbar .fa, .add-item-bar .fa{
 	color:@muted;
 	background-color: @button;
 	padding: 5px 8px;
@@ -122,42 +326,32 @@ a {
 		background-color: MediumAquaMarine;
 	}
 }
-.outerslug .fa-link {
-	display: none;
-}
-.topbar {
-	padding-top: 1px;
-	margin-bottom: 30px;
-	.searchbox {
-		padding: 0 0 0 5px;
-		border-bottom: 1px solid lighten(@muted, 35%);
-		-webkit-transition: background-color 0.5s ease-in-out;
-	    -moz-transition: background-color 0.5s ease-in-out;
-	    -o-transition: background-color 0.5s ease-in-out;
-	    transition: background-color 0.5s ease-in-out;
-	}
-	.fa-plus { border-bottom: 1px solid lighten(@muted, 35%)}
-	.blue {
-		background-color: @button;
-	}
-	.search {
-		width: 80px;
-		padding: 0;
-		outline: none;
-		border: none;
-		font-size: 1em;
-		background-color: transparent;
-		-webkit-transition: width 0.5s ease-in-out;
-	    -moz-transition: width 0.5s ease-in-out;
-	    -o-transition: width 0.5s ease-in-out;
-	    transition: width 0.5s ease-in-out;
-	    color:@muted;
-		&:focus {
-			width: 200px;
-			color: black;
-		}
+
+.edit-btn {
+	padding: 5px 8px;
+	background-color: @button;
+	#fa-icon(pencil, @muted);
+	&:hover{
+		#fa-icon(pencil, white);
+		background-color: MediumAquaMarine;
 	}
 }
+
+.save-btn {
+  max-height: 27px;
+  align-self: flex-start;
+	padding: 5px 8px;
+	background-color: @button;
+	#fa-icon(check, green);
+	&:hover{
+		#fa-icon(check,white);
+		background-color: MediumAquaMarine;
+	}
+}
+
+/****************************************************
+		Menu 
+****************************************************/
 .menu {
 	min-height: 100%;
 	width: 100%;
@@ -166,6 +360,7 @@ a {
 		color: darken(@muted, 10%);
 		padding: 5px 0;
 		font-weight: bold;
+    cursor: pointer;
 	}
 	.fa {
 		background-color: transparent;
@@ -238,6 +433,17 @@ a {
 		}
 
 	}
+  #index-list {
+    overflow: hidden;
+    -webkit-transition: transform 5s ease-in-out;
+    -moz-transition: transform 5s ease-in-out;
+    -o-transition: transform 5s ease-in-out;
+    transition: transform 5s ease-in-out;
+    &.hide-index-list {
+      -webkit-transform: scaleY(0);
+      transform: scaleY(0);
+    }
+  }
 	.tt-dropdown-menu {
 		padding: 0;
 		background-color: lighten(@dark, 10%);
@@ -256,116 +462,6 @@ a {
 				color: lighten(@link,20%);
 			}
 		}
-	}
-}
-.title-bar {
-	position: relative;
-	//margin: 20px 0 0 0;
-	//text-transform: capitalize;
-	.title {
-		font-size: 2em;
-		font-weight: bold;
-	}
-	.edit-title {
-		font-size: 2em;
-		font-family: inherit;
-		padding: 0;
-		margin: 0;
-		font-weight: bold;
-		border:none;
-		outline: none;
-		border-bottom: 1px dashed gray; 
-		background-color: transparent;
-	}
-}
-.index-item {
-	padding: 10px 15px 10px 15px;
-	background-color: #f8f8f8;
-	.title-bar {
-		margin-bottom: 10px;
-		.outerslug .fa-link {
-			display: inline-block;
-		}
-	}
-	.title {
-		font-size: 0.9em;
-		font-weight: bold;
-		color: #808080;
-	}
-	.panel {
-		padding: 0;
-	}
-}
-.editbox {
-	border: 1px dotted gray;
-	padding: 10px 15px;
-	margin-top: -10px;
-	margin-left: -15px;
-	margin-right: -15px;
-}
-.btn {
-	cursor: pointer;
-}
-.edit-btn {
-	padding: 5px 8px;
-	background-color: @button;
-	#fa-icon(pencil, @muted);
-	float: right;
-	&:hover{
-		#fa-icon(pencil, white);
-		background-color: MediumAquaMarine;
-	}
-}
-.save-btn {
-	padding: 5px 8px;
-	background-color: @button;
-	#fa-icon(check, green);
-	float: right;
-	&:hover{
-		#fa-icon(check,white);
-		background-color: MediumAquaMarine;
-	}
-}
-.panel {
-	padding: 20px 0;
-	//background-color: @base-bg;
-	p {
-		margin-bottom: .8em;
-	}
-	.panel {
-		margin: 5px 0;
-		padding: 10px 20px 5px 20px;
-		border-left: 2px solid #ddd;
-		background-color: darken(@base-bg,7%);
-		.panel {
-			background-color: darken(@base-bg, 14%);
-			border-left: 2px solid #bbb;
-			.panel {
-				background-color: @base-bg;
-				.panel {
-					background-color: darken(@base-bg, 5%);	
-					.panel {
-						background-color: darken(@base-bg, 10%);	
-					}
-				}
-			}		
-		}
-	}
-}
-.inneritem-title {
-	font-size: 0.9em;
-	font-weight: bold;
-	color: @muted;
-}
-.innerlink {
-	float: right;
-	padding: 5px 8px;
-	color: #808080;
-	cursor: pointer;
-	font-size: .9em;
-	&:hover {
-		color: white;
-		background-color: MediumAquaMarine;
 	}
 }
 /******************************/
@@ -393,9 +489,9 @@ a {
 	color: lightgray;
 	overflow: hidden;
 	-webkit-transition: height 0.2s ease-in-out;
-    -moz-transition: height 0.2s ease-in-out;
-    -o-transition: height 0.2s ease-in-out;
-    transition: height 0.2s ease-in-out;
+  -moz-transition: height 0.2s ease-in-out;
+  -o-transition: height 0.2s ease-in-out;
+  transition: height 0.2s ease-in-out;
     &.show-confirm {
     	height: 100px;
     }
@@ -439,9 +535,16 @@ a {
    	-o-transition: height 0.5s ease-in-out; 
 	transition: height 0.5s ease-in-out;
 	&.show-additem {
-		height:600px;
+    height: 99%;
+		height: 99vh;
+	}
+	.add-item-bar { 
+    display: flex;
+    justify-content: flex-end;
+		height: 28px; 
 	}
 	.additem-box {
+    padding-top:30px;
 		background-color: @button;
 		display: flex;
 		flex-direction: row;
@@ -451,15 +554,6 @@ a {
 		align-items: stretch;
 		width: 100%;
 		min-height: 100%;
-	}
-	.fa { 
-		float:right; 
-		margin-left: .3em;
-		margin-top: 1px; 
-		background-color: darken(@button, 5%);
-	}
-	.bar { 
-		height: 28px; 
 	}
 	#add-item {
 		.title-bar {margin-top: 0;}
@@ -472,6 +566,11 @@ a {
 			&:-ms-input-placeholder {font-style: italic;font-weight:normal;}
 		}
 		.panel {background-color: transparent;}
+	}
+	.fa { 
+		margin-left: 5px;
+		margin-top: 1px; 
+		background-color: darken(@button, 5%);
 	}
 	.item {
 		width: 700px;
@@ -536,28 +635,8 @@ a {
 /******************************/
 //          footer            //
 /******************************/
-.footer-wrap {
-	height: 100px;
-	text-align: center;
-	padding-top: 40px;
-	margin-bottom: 200px;
-	color: @muted;
-}
-.btn-link {
-	font-size: 0.75em;
-	color: @link;
-	font-weight: bold;
-	cursor: pointer;
-	&:hover {
-		color: tomato;
-		text-decoration: underline;
-	}
-}
-button {
-	border: none;
-	border-radius: 0;
-	background-color: @button;
-}
+
+
 /******************************/
 //          utils             //
 /******************************/
@@ -565,4 +644,7 @@ button {
 .pull-right {float: right;}
 .hide {
 	display: none;
+}
+.flex-filler {
+  flex-grow:1;
 }
