@@ -74,9 +74,10 @@ a {
 .app-wrap {
 	min-width: 100%;
 	min-height: 100%;
+  display: -webkit-flex;
 	display:flex;
 	flex-direction: row;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	justify-content: flex-start;
 	align-content: stretch;
 	align-items: stretch;
@@ -648,3 +649,48 @@ a {
 .flex-filler {
   flex-grow:1;
 }
+
+/******************************/
+//          Mobile            //
+/******************************/
+@mediascreen and (max-width: 480px) {
+  .app-wrap {
+    overflow-y: hidden;
+    #menu-wrap {
+      margin-left: -200px;
+      min-width: 200px;
+      &.hide-menu {
+        margin-left: 0;
+      }
+      #login-buttons {
+        display: none;
+      }
+    }
+
+    #content-wrap {
+      min-width: 320px;
+      .content {
+        padding: 0 15px;
+      }
+    }
+  }
+  .panel .zpanel {
+    padding: 8px;
+  }
+}
+/*@mediascreen and (max-width: 480px) {
+  .app-wrap {
+    #menu-wrap {
+      margin-left: -200px;
+      position: absolute;
+      z-index: 99;
+      margin-top: 29px;
+      min-height: ~"calc(100vh - 30px)";
+      .menu {
+        min-height: ~"calc(100vh - 30px)";
+      }
+    }
+    #content-wrap {
+    }
+  }
+}*/

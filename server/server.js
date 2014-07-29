@@ -86,19 +86,19 @@ Meteor.startup(function () {
     Wiki.insert(
       { name: "Topic 1",
         slug: "topic-1",
-        definition: "In mathematics and theoretical physics, mirror symmetry is a relationship between two <a href='Geometric Objects'>geometric objects</a> called Calabi–Yau manifolds. It can happen that two Calabi–Yau manifolds look very different geometrically but are nevertheless equivalent if they are employed as extra dimensions of string theory. In this case, the manifolds are called mirror manifolds."
+        definition: "<div class='panel'>In mathematics and theoretical physics, mirror symmetry is a relationship between two <a href='Geometric Objects'>geometric objects</a> called Calabi–Yau manifolds. It can happen that two Calabi–Yau manifolds look very different geometrically but are nevertheless equivalent if they are employed as extra dimensions of string theory. In this case, the manifolds are called mirror manifolds.</div>"
       }
     );
     Wiki.insert(
       { name: "Geometric Objects",
         slug: "geometric-objects",
-        definition:"Take a look at some basic geometric objects: line, <a href='Ray'>ray</a>, point, etc. Play with these geometric objects. Notice how they move.",
+        definition:"<div class='panel'>Take a look at some basic geometric objects: line, <a href='Ray'>ray</a>, point, etc. Play with these geometric objects. Notice how they move.</div>",
       }
     );
     Wiki.insert(
       { name: "Ray",
         slug: "ray",
-        definition:"what is a ray? a ray is a line with a direction, think about lazers, that is what a ray is. Lorem Ipsom",
+        definition:"<div class='panel'>what is a ray? a ray is a line with a direction, think about lazers, that is what a ray is. Lorem Ipsom</div>",
       }
     );
   };

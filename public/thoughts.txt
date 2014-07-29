@@ -1,13 +1,6 @@
-so this can be done using components 
+so what should i do now? what is the ultimate vision for this app? well I want to set it up as kind of a generalq style app. except better of course lol. Anyways, i wish to create a website where people all over can create their own wiki system. 
 
-everything is an item. every item has its own html. 
-
-when editing one is able to edit everything. 
-
-When displaying an item, the software actually searches through its text and matches its text with other items. This is usually how other programs does this right?
-
-
-also, please avoid the infinite loop while auto matching, thanks. 
-
-
-I totally gave up on auto matching.... instead i am using links within medium editor now... so you have to manually set up a link and what it points to. I should really create slugs and shit to make sure term names are not retarded lol. 
+- well this must mean that there is a user registration system, which can be done. There must also be a purchasing system, (bitcoin)?
+- maybe not focus on all the features available, but instead on the fact that this is a minimal viable product. Like... really fucking minimal.
+- well this isnt so bad... things work... its not bad... i would ideally like a way to write custom code, just for my sanity, but hey, the point of this is simplicity right?
+- what if i added back in the fucking image thingy?

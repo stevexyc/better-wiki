@@ -10,8 +10,8 @@ Session.set('add_item',false);
 Router.map(function () {
   this.route('home', {
     path: '/',
-    waitOn: function () {
-      return Meteor.subscribe('Terms');
+    onBeforeAction: function () {
+      this.subscribe('Terms').wait();
     },
     template: 'zitem',
     data: function () {
@@ -19,10 +19,16 @@ Router.map(function () {
     },
     layoutTemplate: 'appWrap',
     action: function () {
-      if (this.ready())
-        this.render();
-      else
+      if (this.ready()) {
+        var firstLink = Links.findOne({},{sort:{order:1}}).slug;
+        if (firstLink) {
+          this.redirect('/'+firstLink);
+        } else {
+          this.render();
+        }
+      } else {
         this.render('loading');
+      }
     }
   });
   this.route('page', {
