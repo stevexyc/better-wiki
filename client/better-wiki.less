@@ -76,8 +76,11 @@ a {
 	min-height: 100%;
   display: -webkit-flex;
 	display:flex;
+  -webkit-flex-direction: row;
 	flex-direction: row;
+  -webkit-flex-wrap: nowrap;
 	flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
 	justify-content: flex-start;
 	align-content: stretch;
 	align-items: stretch;
@@ -85,11 +88,17 @@ a {
 	#menu-wrap {
 		margin: 0px;
 		width: 200px;
+    display: -webkit-flex;
 		display:flex;
+    -webkit-flex-direction: row;
 		flex-direction: row;
+		-webkit-flex-wrap: nowrap;
 		flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
 		justify-content: flex-start;
+    -webkit-align-content: stretch;
 		align-content: stretch;
+    -webkit-align-items: stretch;
 		align-items: stretch;
 		-webkit-transition: all 0.5s ease-in-out;
 		-moz-transition: all 0.5s ease-in-out;
@@ -103,26 +112,35 @@ a {
 	#content-wrap {
 		position: relative;
 		width: 280px;
+    -webkit-flex-grow: 1;
 		flex-grow: 1;
+    display: -webkit-flex;
 		display:flex;
+    -webkit-flex-direction: column;
 		flex-direction: column;
 		flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
 		justify-content: flex-start;
 		align-content: stretch;
 		align-items: stretch;
     
     .topbar-wrap {
-      padding-top: 1px;
       margin-bottom: 30px;
 
     } //end topbar-wrap
 
 		.content {
+      -webkit-flex-grow:1;
       flex-grow: 1;
+      -webkit-align-self: stretch;
       align-self: stretch;
+      display: -webkit-flex;
       display: flex;
+      -webkit-flex-direction: row;
       flex-direction: row;
+      -webkit-flex-wrap: nowrap;
       flex-wrap: nowrap;
+      -webkit-justify-content: center;
       justify-content: center;
       padding: 0 30px;
 		} //end content
@@ -134,9 +152,13 @@ a {
 		 topbar-wrap
 ****************************************************/
 .topbar {
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-direction: row;
   flex-direction: row;
+  -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   background-color: @button;
   
@@ -199,8 +221,11 @@ a {
   width: 700px;
   //margin: 0 30px;
   .title-bar {
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: row;
     flex-direction: row;
+    -webkit-justify-content: space-between;
     justify-content: space-between;
     .title {
       font-size: 2em;
@@ -251,9 +276,13 @@ a {
 		innerItems 
 ****************************************************/
 .inneritem-titlebar {
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-direction: row;
   flex-direction: row;
+  -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   .inneritem-title {
     font-size: 0.9em;
@@ -340,6 +369,7 @@ a {
 
 .save-btn {
   max-height: 27px;
+  -webkit-align-self: flex-start;
   align-self: flex-start;
 	padding: 5px 8px;
 	background-color: @button;
@@ -540,7 +570,9 @@ a {
 		height: 99vh;
 	}
 	.add-item-bar { 
+    display: -webkit-flex;
     display: flex;
+    -webkit-justify-content: flex-end;
     justify-content: flex-end;
 		height: 28px; 
 	}
@@ -647,15 +679,25 @@ a {
 	display: none;
 }
 .flex-filler {
+  -webkit-flex-grow:1;
   flex-grow:1;
 }
-
+.fa {
+  max-height: 17px;
+}
+.save-btn, .edit-btn {
+  line-height: 17px;
+}
 /******************************/
 //          Mobile            //
 /******************************/
 @mediascreen and (max-width: 480px) {
+  html, body, .app-wrap {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   .app-wrap {
-    overflow-y: hidden;
     #menu-wrap {
       margin-left: -200px;
       min-width: 200px;
@@ -677,20 +719,13 @@ a {
   .panel .zpanel {
     padding: 8px;
   }
-}
-/*@mediascreen and (max-width: 480px) {
-  .app-wrap {
-    #menu-wrap {
-      margin-left: -200px;
-      position: absolute;
-      z-index: 99;
-      margin-top: 29px;
-      min-height: ~"calc(100vh - 30px)";
-      .menu {
-        min-height: ~"calc(100vh - 30px)";
-      }
-    }
-    #content-wrap {
+  div.topbar {
+    background-color: #f3f3f3;
+    i#menu-toggle, i.topbar-search.fa-search, i#newItemBtn {
+      background-color: inherit;
+      color: @muted; 
     }
   }
-}*/
+  
+}
+
