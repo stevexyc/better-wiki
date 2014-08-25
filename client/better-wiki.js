@@ -172,14 +172,14 @@ Template.zmenu.events({
     var $newinput = $('<input type="text" class="add-link"/>');
     $(parent).html($newinput);
     $newinput.typeahead({
-              hint: true,
-              highlight: true,
-              minLength: 1,
-            },{
-              name: 'terms',
-              displayKey: 'value',
-              source: substringMatcher()
-            });
+        hint: true,
+        highlight: true,
+        minLength: 1,
+      },{
+        name: 'terms',
+        displayKey: 'value',
+        source: substringMatcher()
+    });
     $newinput.focus();
   },
   'keyup .add-link': function (e,t) {
